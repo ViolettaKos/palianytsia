@@ -1,5 +1,30 @@
 package com.example.palianytsia.model;
 
-public enum Role {
-    USER, ADMIN, MANAGER
+import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.util.Collection;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Accessors(chain = true)
+@Entity
+@Table(name = "role")
+public class Role {
+    @Id
+    @Column(name = "role_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToMany(mappedBy = "roles")
+    private Collection<User> users;
+
+    @Enumerated(EnumType.STRING)
+    private UserRoles role;
 }

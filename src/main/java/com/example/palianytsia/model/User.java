@@ -4,13 +4,16 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
+import java.util.Collection;
 import java.util.List;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @Entity
 @Table(name = "users")
 // jsonidentituinfo annotation
@@ -35,9 +38,11 @@ public class User {
         @Column(name = "mobile_num", nullable = false)
         private String mobileNumber;
 
-        @Column(nullable = false)
-        @Enumerated(EnumType.STRING)
-        private Role role;
+        @ManyToMany(fetch = FetchType.LAZY)
+        @JoinTable(name = "user_role",
+                joinColumns = {@JoinColumn(name = "user_id")},
+                inverseJoinColumns = {@JoinColumn(name = "role_id")})
+        private Collection<Role> roles;
 
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
         private List<Location> locations;

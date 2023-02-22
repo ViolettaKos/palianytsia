@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div  th:fragment="alertTag" th:if="${message}">
+    <hr>
+    <div class="alert alert-danger">
+        <strong th:text="#{${message}}"></strong>
+        <strong th:text="#{try}"/>
+    </div>
+    <hr>
+</div>
+
