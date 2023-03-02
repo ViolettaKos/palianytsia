@@ -3,6 +3,7 @@ package com.example.palianytsia.config.security;
 import com.example.palianytsia.model.Role;
 import com.example.palianytsia.model.User;
 import com.example.palianytsia.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -25,8 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("Email to check user: "+email);
         User user = userRepository.findByEmail(email);
         if (user != null) {
+            log.info("user email:"+user.getEmail());
+            log.info("user name:"+user.getFirstName());
             List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
             return buildUserForAuthentication(user, authorities);
         } else {

@@ -1,5 +1,6 @@
 package com.example.palianytsia.controller.request;
 
+import com.example.palianytsia.model.City;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,9 @@ public class UserSignUpRequest {
 
     @NotEmpty(message = "{constraints.NotEmpty.message}")
     private String mobileNumber;
+
+    private City city;
+    private String street;
+    private String house;
+    private int apartment;
 }

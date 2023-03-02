@@ -1,80 +1,61 @@
 package com.example.palianytsia.controller;
 
-import com.example.palianytsia.controller.request.UserSignUpRequest;
+import com.example.palianytsia.dto.LocationDTO;
 import com.example.palianytsia.dto.UserDTO;
-import com.example.palianytsia.exception.DuplicatedEmailException;
-import com.example.palianytsia.exception.ServiceException;
+import com.example.palianytsia.model.City;
 import com.example.palianytsia.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import static com.example.palianytsia.controller.Constants.MSG;
-import static com.example.palianytsia.controller.Constants.NO_MATCH;
+import java.security.Principal;
 
-@Slf4j
+import static com.example.palianytsia.controller.Constants.CITY;
+import static com.example.palianytsia.controller.Constants.USER;
+
 @Controller
+@Slf4j
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("/signIn")
-    public String toSignIn() {
-        return "signIn";
+
+
+    @GetMapping("/profile")
+    public String toProfile(Model model, Principal principal) {
+        log.info("To profile page");
+        log.info("Email of user: "+principal.getName());
+        UserDTO userDTO = userService.findByEmail(principal.getName());
+        model.addAttribute(USER, userDTO);
+        model.addAttribute(CITY, City.values());
+        return "user/profile";
     }
 
-    @GetMapping("/signUp")
-    public String toSignUp(Model model) {
-        model.addAttribute("userSignUpRequest", new UserSignUpRequest());
-        return "signUp";
+    @PostMapping("/addAddress")
+    public String addAddress(Principal principal, @ModelAttribute LocationDTO locationDTO, Model model) {
+        UserDTO userDTO = userService.findByEmail(principal.getName());
+
+        locationDTO=userService.addAddress(userDTO, locationDTO);
+        userDTO.getLocations().add(locationDTO);
+        model.addAttribute(USER, userDTO);
+
+        return "redirect:/user/profile";
     }
 
-    @PostMapping("/signUp")
-    public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model) throws ServiceException {
-        if(userSignUpRequest.getPassword().equals(userSignUpRequest.getRepeated_password())) {
-            log.info("Passwords match");
-            try {
-                registerUser(userSignUpRequest);
-            } catch (DuplicatedEmailException e) {
-                log.info("Duplicated Email");
-                model.addAttribute(MSG, e.getMessage());
-                return "signUp";
-            }
-        } else {
-            log.info("Passwords don't match");
-            model.addAttribute(MSG, NO_MATCH);
-            return "signUp";
-        }
-        return "redirect:/signIn";
-    }
-    @PostMapping("/signIn")
-    public String signIn(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model) {
-        UserDTO userDTO=new UserDTO()
-                .setEmail(userSignUpRequest.getEmail())
-                .setPassword(userSignUpRequest.getPassword());
-        try {
-            userService.signIn(userDTO);
-        } catch (ServiceException e) {
-            model.addAttribute(MSG, e.getMessage());
-        }
-        return null;
-    }
+    @PostMapping("/editAddress")
+    public String editAddress(@ModelAttribute LocationDTO locationDTO, Principal principal, Model model) {
+        UserDTO userDTO = userService.findByEmail(principal.getName());
+        userService.editAddress(locationDTO);
+        model.addAttribute(USER, userDTO);
 
-    private void registerUser(UserSignUpRequest userSignupRequest) throws ServiceException {
-        UserDTO userDto = new UserDTO()
-                .setEmail(userSignupRequest.getEmail())
-                .setPassword(userSignupRequest.getPassword())
-                .setFirstName(userSignupRequest.getFirstName())
-                .setLastName(userSignupRequest.getLastName())
-                .setMobileNumber(userSignupRequest.getMobileNumber());
-        log.info("Successfully setting fields to UserDTO");
-        userService.signUp(userDto);
+        return "redirect:/user/profile";
     }
 
 }

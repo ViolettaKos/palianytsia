@@ -1,7 +1,9 @@
 package com.example.palianytsia.dto;
 
 
+import com.example.palianytsia.model.Location;
 import com.example.palianytsia.model.Role;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,9 @@ public class UserDTO {
     @NotNull
     @NotBlank
     private String mobileNumber;
+
     private Collection<RoleDTO> roles;
+    @Max(5)
+    private Collection<LocationDTO> locations;
 
 }

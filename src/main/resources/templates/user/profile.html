@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{profile}"></title>
+  <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+    <link th:href="@{/assets/css/styleProfile.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+    <style>
+        .btn-profile {
+            margin-top: 20px;
+            background: var(--color-primary);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 50px;
+            transition: 0.3s;
+            border: var(--color-primary);
+        }
+        .btn-profile:hover {
+            color: #fff;
+            background: rgba(206, 18, 18, 0.8);
+        }
+        .btn-profile:disabled{
+            background: mistyrose;
+        }
+
+        /* The popup form - hidden by default */
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            border-radius: 10px;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px 0;
+            border: none;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+<main id="main" class="main">
+
+    <div class="pagetitle" style="padding-top: 50px; margin-left:100px; padding-bottom: 10px;">
+        <h1 th:text="#{profile}"/>
+    </div><!-- End Page Title -->
+
+    <div class="col-xl-8" style="margin-left: 100px">
+
+        <div class="card">
+            <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" th:text="#{overview}"/>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-addresses" th:text="#{addresses}"/>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" th:text="#{editProfile}"/>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings" th:text="#{settings}"/>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" th:text="#{changePass}"/>
+                    </li>
+
+                </ul>
+                <div class="tab-content pt-2">
+
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                        <h5 class="card-title" th:text="#{profileDetails}"/>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label " th:text="#{fullName}"/>
+                            <div class="col-lg-9 col-md-8" th:text="${user.firstName+' '+user.lastName}"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label" th:text="#{telephone.num}"/>
+                            <div class="col-lg-9 col-md-8" th:text="${user.mobileNumber}"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label" th:text="#{email}"/>
+                            <div class="col-lg-9 col-md-8" th:text="${user.email}"/>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade pt-3" id="profile-addresses">
+                        <h5 class="card-title" th:text="#{addresses}"/>
+
+                        <div class="row">
+                            <div th:if="${user.locations != null}">
+                                <li th:each="location : ${user.locations}">
+                                    <span th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></span>
+                                    <a onclick="openEditForm(this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00">Edit</a>
+                                    <a onclick="openForm('deleteForm')" style="color: red; text-decoration: underline"
+                                    th:attr="data-locationId=${location.id}" id="delete">Delete</a>
+                                </li>
+                            </div>
+                            <div class="col-lg-9 col-md-8" th:if="${user.locations == null}"
+                                                         th:text="#{noAddress}"/>
+                        </div>
+                        <div class="text-center" th:if="${user.locations.size()==5}">
+                            <button type="submit" class="btn-profile" disabled th:text="#{addAddress}"/>
+                            <p style="margin-top: 10px; font-style: italic; color: #a52834">You can only have up to 5 addresses!</p>
+                        </div>
+                        <div class="text-center" th:if="${user.locations.size()<5}">
+                            <button type="submit" class="btn-profile" onclick="openForm('popupForm')"  th:text="#{addAddress}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                        <!-- Profile Edit Form -->
+                        <form>
+
+                            <div class="row mb-3">
+                                <label for="firstName" class="col-md-4 col-lg-3 col-form-label" th:text="#{first.name}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="firstName" type="text" class="form-control" id="firstName" th:field="*{user.firstName}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="lastName" class="col-md-4 col-lg-3 col-form-label" th:text="#{last.name}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="lastName" type="text" class="form-control" id="lastName" th:field="*{user.lastName}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="Phone" class="col-md-4 col-lg-3 col-form-label" th:text="#{telephone.num}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="phone" type="text" class="form-control" id="Phone" th:field="*{user.mobileNumber}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="Email" class="col-md-4 col-lg-3 col-form-label" th:text="#{email}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="email" type="email" class="form-control" id="Email" th:field="*{user.email}">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn-profile"  th:text="#{saveChanges}"/>
+                            </div>
+                        </form><!-- End Profile Edit Form -->
+
+                    </div>
+
+                    <div class="tab-pane fade pt-3" id="profile-settings">
+
+                        <!-- Settings Form -->
+                        <form>
+
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-lg-3 col-form-label" th:text="#{emailNotifications}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                                        <label class="form-check-label" for="changesMade" th:text="#{changesAccount}"/>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                                        <label class="form-check-label" for="newProducts" th:text="#{infoProducts}"/>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="proOffers">
+                                        <label class="form-check-label" for="proOffers" th:text="#{offers}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn-profile" th:text="#{saveChanges}"/>
+                            </div>
+                        </form><!-- End settings Form -->
+
+                    </div>
+
+                    <div class="tab-pane fade pt-3" id="profile-change-password">
+                        <!-- Change Password Form -->
+                        <form>
+
+                            <div class="row mb-3">
+                                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{currPass}"/>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="password" type="password" class="form-control" id="currentPassword" th:field="*{user.password}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{newPass}"></label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="newpassword" type="password" class="form-control" id="newPassword">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{confirmNewPass}"></label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn-profile" th:text="#{changePass}"/>
+                            </div>
+                        </form><!-- End Change Password Form -->
+
+                    </div>
+
+                </div><!-- End Bordered Tabs -->
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </section>
+
+</main><!-- End #main -->
+<div class="form-popup" id="popupForm">
+    <form class="form-container" th:action="@{/user/addAddress}" method="post">
+        <h2 class="form-header">New Address</h2>
+        <p>Please fill all fields to add a new address to your profile.</p>
+
+        <label><b th:text="#{city}"/></label>
+        <select name="city">
+            <option th:each="city : ${city}" th:value="${city}" th:text="${city}"></option>
+        </select>
+
+        <label><b th:text="#{street}"/></label>
+        <input type="text" placeholder="Enter Street" name="street" required>
+
+        <label><b th:text="#{house}"/></label>
+        <input type="text" placeholder="Enter House number" name="house" required>
+
+        <label><b th:text="#{apartment}"/></label>
+        <input type="text" placeholder="Enter apartment number" name="apartment" required>
+
+        <button type="submit" class="btn">Add Address</button>
+        <button type="button" class="btn cancel" onclick="closeTheForm('popupForm')">Close</button>
+    </form>
+</div>
+
+<div class="form-popup" id="editForm">
+    <form class="form-container" th:action="@{/user/editAddress}" method="post">
+        <h2 class="form-header">Edit Address</h2>
+
+        <label><b th:text="#{city}"/></label>
+        <select name="city" id="city-input">
+            <option th:each="city : ${city}" th:text="${city}"></option>
+        </select>
+
+        <label><b th:text="#{street}"/></label>
+        <input type="text" id="street-input" name="street" required>
+
+        <label><b th:text="#{house}"/></label>
+        <input type="text" id="house-input" name="house" required>
+
+        <label><b th:text="#{apartment}"/></label>
+        <input type="text" id="apartment-input" name="apartment" required>
+
+        <input type="hidden" id="id" name="id" value="" />
+        <button type="submit" class="btn">Save Changes</button>
+        <button type="button" class="btn cancel" onclick="closeTheForm('editForm')">Close</button>
+    </form>
+</div>
+<div class="form-popup" id="deleteForm">
+    <form class="form-container" th:action="@{/user/deleteAddress}" method="post">
+        <h2 class="form-header">Delete Address</h2>
+        <p>Are you sure you want to delete this address?</p>
+
+        <input type="hidden" id="locationId-input" name="locationId" value="" />
+        <button type="submit" id="delete-btn" class="btn">Delete</button>
+        <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')">Close</button>
+    </form>
+</div>
+
+
+<script>
+    function openForm(formName) {
+        document.getElementById(formName).style.display="block";
+        const locationId = document.getElementById("delete").getAttribute("data-locationId");
+        document.getElementById("locationId-input").value = locationId;
+        console.log("id: "+locationId);
+    }
+
+    function closeTheForm(formName) {
+        document.getElementById(formName).style.display = "none";
+    }
+
+    function openEditForm(location) {
+        document.getElementById("editForm").style.display = "block";
+
+        document.getElementById("city-input").value = location.dataset.city;
+        document.getElementById("street-input").value = location.dataset.street;
+        document.getElementById("house-input").value = location.dataset.house;
+        document.getElementById("apartment-input").value = location.dataset.apartment;
+        document.getElementById("id").value =location.dataset.id;
+    }
+</script>
+
+
+<!-- Vendor JS Files -->
+<script th:src="@{assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{assets/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{assets/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{assets/vendor/quill/quill.min.js}"></script>
+<script th:src="@{assets/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{assets/vendor/tinymce/tinymce.min.js}"></script>
+
+
+<!-- Template Main JS File -->
+<script th:src="@{assets/js/mainProfile.js}"></script>
+</body>
+</html>

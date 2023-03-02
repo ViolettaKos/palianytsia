@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 
 <title>Palianytsia</title>
-    <th:block th:insert="~{head.html :: headerfiles}">
+    <th:block th:insert="~{guest/head.html :: headerfiles}">
     </th:block>
 </head>
 <body>
 <!-- ======= Header ======= -->
-<header th:insert="~{head.html :: header}"></header>
+<header th:insert="~{guest/head.html :: header}"></header>
 
 
 <section id="hero" class="hero d-flex align-items-center section-bg">

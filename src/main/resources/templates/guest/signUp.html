@@ -6,11 +6,11 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <th:block th:insert="~{head.html :: headerfiles}"></th:block>
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
 </head>
 <body>
 <!-- ======= Header ======= -->
-<header th:insert="~{head.html :: header}"></header>
+<header th:insert="~{guest/head.html :: header}"></header>
 
 <div style="margin-top: 150px" class="container">
     <div class="registration mx-auto d-block w-100">
@@ -21,7 +21,7 @@
             <h1 th:text="#{signUp}"/>
         </div>
 
-        <form name="member-registration" th:action="@{/signUp}" th:object="${userSignUpRequest}" method="post"
+        <form name="member-registration" th:action="@{/guest/signUp}" th:object="${userSignUpRequest}" method="post"
               class="form-validate form-horizontal well">
             <fieldset>
                 <div class="form-group">
@@ -76,7 +76,7 @@
                         <button type="submit" class="submit" th:text="#{submit}"/>
                     </div>
                     <div class="form-check form-group d-flex justify-content-end">
-                        <a style="color: rgba(206, 18, 18, 0.8)" href="/signIn" th:text="#{sign.instead}"/>
+                        <a style="color: rgba(206, 18, 18, 0.8)" href="/guest/signIn" th:text="#{sign.instead}"/>
                     </div>
                 </div>
             </fieldset>

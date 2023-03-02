@@ -3,16 +3,20 @@ package com.example.palianytsia.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "locations")
 @Accessors(chain = true)
 @Entity
 @Table(name = "users")
@@ -38,15 +42,15 @@ public class User {
         @Column(name = "mobile_num", nullable = false)
         private String mobileNumber;
 
-        @ManyToMany(fetch = FetchType.LAZY)
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_role",
                 joinColumns = {@JoinColumn(name = "user_id")},
                 inverseJoinColumns = {@JoinColumn(name = "role_id")})
         private Collection<Role> roles;
 
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-        private List<Location> locations;
+        private Set<Location> locations;
 
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-        private List<Order> orders;
+        private Set<Order> orders;
 }
