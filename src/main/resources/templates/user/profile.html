@@ -154,10 +154,10 @@
                         <div class="row">
                             <div th:if="${user.locations != null}">
                                 <li th:each="location : ${user.locations}">
+                                    <span th:text="${location.id}"></span>
                                     <span th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></span>
-                                    <a onclick="openEditForm(this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00">Edit</a>
-                                    <a onclick="openForm('deleteForm')" style="color: red; text-decoration: underline"
-                                    th:attr="data-locationId=${location.id}" id="delete">Delete</a>
+                                    <a onclick="openEditDeleteForm('editForm', this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00">Edit</a>
+                                    <a onclick="openEditDeleteForm('deleteForm', this)" th:data-id="${location.id}" style="color: red; text-decoration: underline">Delete</a>
                                 </li>
                             </div>
                             <div class="col-lg-9 col-md-8" th:if="${user.locations == null}"
@@ -168,7 +168,7 @@
                             <p style="margin-top: 10px; font-style: italic; color: #a52834">You can only have up to 5 addresses!</p>
                         </div>
                         <div class="text-center" th:if="${user.locations.size()<5}">
-                            <button type="submit" class="btn-profile" onclick="openForm('popupForm')"  th:text="#{addAddress}"/>
+                            <button type="submit" class="btn-profile" onclick="openForm()"  th:text="#{addAddress}"/>
                         </div>
                     </div>
 
@@ -337,7 +337,7 @@
         <h2 class="form-header">Delete Address</h2>
         <p>Are you sure you want to delete this address?</p>
 
-        <input type="hidden" id="locationId-input" name="locationId" value="" />
+        <input type="hidden" id="locationId-input" name="id" value="" />
         <button type="submit" id="delete-btn" class="btn">Delete</button>
         <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')">Close</button>
     </form>
@@ -345,25 +345,25 @@
 
 
 <script>
-    function openForm(formName) {
-        document.getElementById(formName).style.display="block";
-        const locationId = document.getElementById("delete").getAttribute("data-locationId");
-        document.getElementById("locationId-input").value = locationId;
-        console.log("id: "+locationId);
+    function openForm() {
+        document.getElementById('popupForm').style.display="block";
     }
+
 
     function closeTheForm(formName) {
         document.getElementById(formName).style.display = "none";
     }
 
-    function openEditForm(location) {
-        document.getElementById("editForm").style.display = "block";
+    function openEditDeleteForm(formName, location) {
+        document.getElementById(formName).style.display="block";
 
         document.getElementById("city-input").value = location.dataset.city;
         document.getElementById("street-input").value = location.dataset.street;
         document.getElementById("house-input").value = location.dataset.house;
         document.getElementById("apartment-input").value = location.dataset.apartment;
         document.getElementById("id").value =location.dataset.id;
+        document.getElementById("locationId-input").value = location.dataset.id;
+        console.log("id: "+location.dataset.id);
     }
 </script>
 
