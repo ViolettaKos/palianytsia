@@ -26,6 +26,13 @@
             </div>
             <hr>
         </div>
+        <div th:if="${successMessage}">
+            <hr>
+            <div class="alert alert-success">
+                <strong th:text="#{${successMessage}}"></strong>
+            </div>
+            <hr>
+        </div>
 
         <div class="page-header text-center">
             <h1 th:text="#{signIn}"/>
@@ -53,6 +60,7 @@
                 </div>
             </fieldset>
         </form>
+    </sec>
     </div>
 </div>
 

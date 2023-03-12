@@ -12,33 +12,36 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class UserDTO {
-    @NotNull
-    @NotBlank
+
+    @NotBlank(message = "{constraints.NotEmpty.message}")
     private String firstName;
-    @NotNull
-    @NotBlank
+
+    @NotBlank(message = "{constraints.NotEmpty.message}")
     private String lastName;
-    @NotNull
-    @NotBlank
+
+    @NotBlank(message = "{constraints.NotEmpty.message}")
     private String email;
-    @NotNull
-    @NotBlank
+
+
     private String password;
-    @NotNull
-    @NotBlank
+
+
     private String repeated_password;
-    @NotNull
-    @NotBlank
+    private String newPass;
+    private String confirmPass;
+
+    @NotBlank(message = "{constraints.NotEmpty.message}")
     private String mobileNumber;
 
-    private Collection<RoleDTO> roles;
-    @Max(5)
+    private Set<RoleDTO> roles;
+
     private Collection<LocationDTO> locations;
 
 }

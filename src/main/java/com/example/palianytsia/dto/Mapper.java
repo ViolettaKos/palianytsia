@@ -23,16 +23,30 @@ public class Mapper {
                         .map(location, LocationDTO.class)).collect(Collectors.toSet())));
     }
 
+    // #todo think about locations, null pointer when register
     public static User toUser(UserDTO userDTO) {
-        return new User()
+        User user = new User()
                 .setFirstName(userDTO.getFirstName())
                 .setLastName(userDTO.getLastName())
                 .setEmail(userDTO.getEmail())
                 .setMobileNumber(userDTO.getMobileNumber())
                 .setRoles(new HashSet<>(userDTO.getRoles().stream().map(role -> new ModelMapper()
-                        .map(role, Role.class)).collect(Collectors.toSet())))
-                .setLocations(new HashSet<>(userDTO.getLocations().stream().map(location -> new ModelMapper()
-                        .map(location, Location.class)).collect(Collectors.toSet())));
+                        .map(role, Role.class)).collect(Collectors.toSet())));
+
+        if (userDTO.getLocations() != null) {
+            user.setLocations(new HashSet<>(userDTO.getLocations().stream().map(location -> new ModelMapper()
+                    .map(location, Location.class)).collect(Collectors.toSet())));
+        }
+        return user;
+//        return new User()
+//                .setFirstName(userDTO.getFirstName())
+//                .setLastName(userDTO.getLastName())
+//                .setEmail(userDTO.getEmail())
+//                .setMobileNumber(userDTO.getMobileNumber())
+//                .setRoles(new HashSet<>(userDTO.getRoles().stream().map(role -> new ModelMapper()
+//                        .map(role, Role.class)).collect(Collectors.toSet())))
+//                .setLocations(new HashSet<>(userDTO.getLocations().stream().map(location -> new ModelMapper()
+//                        .map(location, Location.class)).collect(Collectors.toSet())));
     }
 
     public static LocationDTO toLocationDTO(Location location) {

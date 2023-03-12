@@ -1,9 +1,11 @@
 package com.example.palianytsia.controller;
 
 import com.example.palianytsia.controller.request.UserSignUpRequest;
+import com.example.palianytsia.dto.RoleDTO;
 import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
+import com.example.palianytsia.model.UserRoles;
 import com.example.palianytsia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.Locale;
+import java.util.*;
 
-import static com.example.palianytsia.controller.Constants.MSG;
-import static com.example.palianytsia.controller.Constants.NO_MATCH;
+import static com.example.palianytsia.controller.Constants.*;
+import static com.example.palianytsia.controller.PageConstants.*;
 
 @Slf4j
 @Controller
@@ -37,28 +40,26 @@ public class BasicGuestController {
 
     @GetMapping("/mainPage")
     public String goHome(Model model, Locale locale) {
-        log.info("My main page");
-        model.addAttribute("lang", locale.getLanguage());
-        return "guest/mainPage";
+        model.addAttribute(LANG, locale.getLanguage());
+        return MAIN_PAGE;
     }
 
     @GetMapping("/signIn")
     public String toSignIn() {
         log.info("To sign in page");
-        //model.addAttribute("userSignUpRequest", new UserSignUpRequest());
-        return "guest/signIn";
+        return SIGNIN_PAGE;
     }
 
 
 
     @GetMapping("/signUp")
     public String toSignUp(Model model) {
-        model.addAttribute("userSignUpRequest", new UserSignUpRequest());
-        return "guest/signUp";
+        model.addAttribute(USER_SIGNUP, new UserSignUpRequest());
+        return SIGNUP_PAGE;
     }
 
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model) throws ServiceException {
+    public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model, RedirectAttributes redirectAttributes) throws ServiceException {
         if(userSignUpRequest.getPassword().equals(userSignUpRequest.getRepeated_password())) {
             log.info("Passwords match");
             try {
@@ -66,18 +67,24 @@ public class BasicGuestController {
             } catch (DuplicatedEmailException e) {
                 log.info("Duplicated Email");
                 model.addAttribute(MSG, e.getMessage());
-                return "guest/signUp";
+                return SIGNUP_PAGE;
             }
         } else {
             log.info("Passwords don't match");
             model.addAttribute(MSG, NO_MATCH);
-            return "guest/signUp";
+            return SIGNUP_PAGE;
         }
-        return "redirect:/guest/signIn";
+        redirectAttributes.addFlashAttribute(SUCCESS, WARN_SUCCESS);
+        return REDIRECT_SIGNIN;
     }
 
     private void registerUser(UserSignUpRequest userSignupRequest) throws ServiceException {
+        RoleDTO userRole = new RoleDTO().setRole(UserRoles.USER);
+        userRole.setId(2L);
+        Set<RoleDTO> roles = new HashSet<>();
+        roles.add(userRole);
         UserDTO userDto = new UserDTO()
+                .setRoles(roles)
                 .setEmail(userSignupRequest.getEmail())
                 .setPassword(userSignupRequest.getPassword())
                 .setFirstName(userSignupRequest.getFirstName())

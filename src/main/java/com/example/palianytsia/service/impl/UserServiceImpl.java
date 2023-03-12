@@ -36,20 +36,42 @@ public class UserServiceImpl implements UserService{
         User user=userRepository.findByEmail(userDTO.getEmail());
         if (user==null) {
             log.info("No such user!");
-
             user=Mapper.toUser(userDTO);
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-            log.info("Name of user: "+user.getFirstName());
-            log.info("User role size: "+user.getRoles().size());
-            user.getRoles().forEach(t -> System.out.println("role: "+t.getRole().name()));
             userRepository.save(user);
         } else {
         log.info("User already exists");
         throw new DuplicatedEmailException(); }
     }
 
+
     @Override
     public UserDTO findByEmail(String email) {
         return toUserDTO(userRepository.findByEmail(email));
+    }
+
+    @Override
+    public UserDTO updateProfile(String email, UserDTO userDTO) throws ServiceException {
+        User user=userRepository.findByEmail(email);
+        if(!email.equals(userDTO.getEmail())) {
+            log.info("Not same email");
+            if(userRepository.findByEmail(userDTO.getEmail())!=null)
+                throw new DuplicatedEmailException();
+        }
+        log.info("Same email");
+        user.setFirstName(userDTO.getFirstName())
+                .setLastName(userDTO.getLastName())
+                .setMobileNumber(userDTO.getMobileNumber())
+                .setEmail(userDTO.getEmail());
+        userRepository.save(user);
+        return Mapper.toUserDTO(user);
+    }
+
+    @Override
+    public void updatePassword(UserDTO userDTO) {
+        User user=userRepository.findByEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getNewPass()));
+        userRepository.save(user);
     }
 }
