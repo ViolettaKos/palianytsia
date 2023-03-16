@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+
+<!-- ======= Menu Section ======= -->
+<section id="menu" class="menu">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header" style="padding-top: 50px">
+            <p>Check Our <span>Delicious Baking</span></p>
+        </div>
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+            <div class="tab-pane fade active show" id="cookies">
+
+                <div class="tab-header text-center">
+                    <h3>Cookies</h3>
+                    <a th:href="@{/guest/allCookies}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                </div>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="cookie: ${cookies}">
+                        <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${cookie.name}"></h4>
+                        <p class="price" th:text="'$' + ${cookie.price}"/>
+
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300" style="margin-top: 50px;">
+
+            <div class="tab-pane fade active show" id="cakes">
+
+                <div class="tab-header text-center">
+                    <h3>Cakes</h3>
+                    <a th:href="@{/guest/allCakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                </div>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="cake: ${cakes}">
+                        <img th:src="@{${cake.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${cake.name}"></h4>
+                        <p class="price" th:text="'$' + ${cake.price}"/>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300" style="margin-top: 50px">
+
+            <div class="tab-pane fade active show" id="croissants">
+
+                <div class="tab-header text-center">
+                    <h3>Croissants</h3>
+                    <a th:href="@{/guest/allCroissants}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                </div>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="croissant: ${croissants}">
+                        <img th:src="@{${croissant.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${croissant.name}"></h4>
+                        <p class="price" th:text="'$' + ${croissant.price}"/>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300" style="margin-top: 50px">
+
+            <div class="tab-pane fade active show" id="cupcakes">
+
+                <div class="tab-header text-center">
+                    <h3>Cupcakes</h3>
+                    <a th:href="@{/guest/allCupcakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                </div>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="cupcake: ${cupcakes}">
+                        <img th:src="@{${cupcake.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${cupcake.name}"></h4>
+                        <p class="price" th:text="'$' + ${cupcake.price}"/>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+
+
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300" style="margin-top: 50px">
+
+            <div class="tab-pane fade active show" id="cheesecakes">
+
+                <div class="tab-header text-center">
+                    <h3>Cheesecakes</h3>
+                    <a th:href="@{/guest/allCheesecakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                </div>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="cheesecake: ${cheesecakes}">
+                        <img th:src="@{${cheesecake.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${cheesecake.name}"></h4>
+                        <p class="price" th:text="'$' + ${cheesecake.price}"/>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+</section>
+</body>
+</html>

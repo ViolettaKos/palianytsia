@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookies</title>
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+    <style>
+
+    button {
+        font-weight: 900;
+        color: black !important;
+    }
+
+    .containerSorter {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .container__title {
+        width: 100%;
+        color: #fff;
+        margin-bottom: 25px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .select-dropdown {
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+    }
+    .select-dropdown__button {
+        padding: 10px 35px 10px 15px;
+        background-color: #fff;
+        color: #616161;
+        border: 1px solid #cecece;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 210px;
+        text-align: left;
+    }
+    .select-dropdown__button:focus {
+        outline: none;
+    }
+    .select-dropdown__button .zmdi-chevron-down {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+    }
+    .select-dropdown__list {
+        position: absolute;
+        display: block;
+        left: 0;
+        right: 0;
+        max-height: 300px;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        opacity: 0;
+        pointer-events: none;
+        transform-origin: top left;
+        transform: scale(1, 0);
+        transition: all ease-in-out 0.3s;
+        z-index: 2;
+    }
+    .select-dropdown__list.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1, 1);
+    }
+    .select-dropdown__list-item {
+        display: block;
+        list-style-type: none;
+        padding: 10px 15px;
+        background: #fff;
+        border-top: 1px solid #e6e6e6;
+        font-size: 14px;
+        line-height: 1.4;
+        cursor: pointer;
+        color: #616161;
+        transition: all ease-in-out 0.3s;
+    }
+    .select-dropdown__list-item:hover {
+        background-color: var(--color-primary);
+        color: #fff;
+        transition: all ease-in-out 0.3s;
+    }
+    </style>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+
+<section id="menu" class="menu">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header" style="padding-top: 50px">
+            <p>Best <span>Cookies Delivery</span></p>
+        </div>
+
+<div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+    <div class="tab-pane fade active show" id="cookies">
+
+        <div class="tab-header text-center">
+            <h3>Cookies</h3>
+        </div>
+
+        <th:block th:insert="~{guest/sorter.html :: sorter}"></th:block>
+
+        <div class="row gy-5">
+
+            <div class="col-lg-4 menu-item" th:each="cookie: ${item}">
+                <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
+                <h4 th:text="${cookie.name}"></h4>
+                <p class="price" th:text="'$' + ${cookie.price}"/>
+                <select class="select-qty">
+                    <option value="1" selected>QTY: 1</option>
+                    <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                        <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                    </th:block>
+                </select>
+                <a class="btn-add-to-cart" th:data-id="${cookie.id}">Add to cart</a>
+            </div><!-- Menu Item -->
+
+
+        </div>
+    </div><!-- End Starter Menu Content -->
+
+</div>
+       <th:block th:insert="~{guest/pagination.html :: pagination}"></th:block>
+    </div>
+</section>
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('.btn-add-to-cart').click(function() {
+            // Get the product ID from the data-id attribute
+            var productId = $(this).data('id');
+
+            // Get the selected quantity from the corresponding select element
+            var qty = $(this).siblings('.select-qty').val();
+
+            // Update the cart count span
+            var cartCount = $('#cart-count');
+            cartCount.text(parseInt(cartCount.text()) + parseInt(qty));
+        });
+    });
+</script>
+<script>
+    $('.select-dropdown__button').on('click', function(){
+        $('.select-dropdown__list').toggleClass('active');
+    });
+    $('.select-dropdown__list-item').on('click', function(){
+        var itemValue = $(this).data('value');
+        console.log(itemValue);
+        $('.select-dropdown__button span').text($(this).text()).parent().attr('data-value', itemValue);
+        $('.select-dropdown__list').toggleClass('active');
+    });
+</script>
+
+</body>
+</html>

@@ -5,27 +5,26 @@ import com.example.palianytsia.dto.RoleDTO;
 import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
+import com.example.palianytsia.model.Item;
 import com.example.palianytsia.model.UserRoles;
+import com.example.palianytsia.service.ItemService;
 import com.example.palianytsia.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import static com.example.palianytsia.controller.Constants.*;
 import static com.example.palianytsia.controller.PageConstants.*;
@@ -38,11 +37,44 @@ public class BasicGuestController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ItemService itemService;
+
+   private static final PaginationUtil paginationUtil=new PaginationUtil();
+
     @GetMapping("/mainPage")
     public String goHome(Model model, Locale locale) {
         model.addAttribute(LANG, locale.getLanguage());
         return MAIN_PAGE;
     }
+
+    @GetMapping("/products")
+    public String showProducts(Model model) {
+        model.addAttribute(COOKIES, itemService.displayThreeCookies());
+        model.addAttribute(CAKES, itemService.displayCakes());
+        model.addAttribute(CROISSANTS, itemService.displayCroissants());
+        model.addAttribute(CUPCAKES, itemService.displayCupcakes());
+        model.addAttribute(CHEESECAKES, itemService.displayCheesecakes());
+        return PRODUCTS_PAGE;
+    }
+
+
+    @GetMapping("/allCookies")
+    public String showCookies(Model model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "6") int recordsPerPage,
+                              @RequestParam(defaultValue = ID) String sort
+                              ) {
+        log.info("Page: "+page+" Records per page: "+recordsPerPage);
+        Pageable pageable = PageRequest.of(page, recordsPerPage, Sort.by(sort).ascending());
+        Page<Item> itemPage = itemService.displayCookies(pageable);
+        Map<String, Object> response = paginationUtil.pagination(itemPage);
+        model.addAllAttributes(response);
+
+        return COOKIES_PAGE;
+    }
+
+
 
     @GetMapping("/signIn")
     public String toSignIn() {

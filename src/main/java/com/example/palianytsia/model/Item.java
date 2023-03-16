@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,9 +20,9 @@ public class Item {
     private long id;
 
     @Column(nullable = false)
-    private int price;
+    private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(name = "item_type",nullable = false)
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
@@ -30,7 +32,7 @@ public class Item {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "imgurl",nullable = false)
     private String imgURL;
 
 

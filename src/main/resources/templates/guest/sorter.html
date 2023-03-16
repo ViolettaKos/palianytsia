@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="containerSorter" th:fragment="sorter" id="sorter">
+  <div class="select-dropdown">
+    <button href="#" role="button" data-value="" class="select-dropdown__button"><span>SORT BY: </span> <i class="zmdi zmdi-chevron-down"></i>
+    </button>
+    <ul class="select-dropdown__list">
+      <li th:attr="onclick='javascript:location.href=\'/guest/allCookies?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort=name\''"  class="select-dropdown__list-item">Name</li>
+      <li th:attr="onclick='javascript:location.href=\'/guest/allCookies?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price\''"  class="select-dropdown__list-item">Price</li>
+    </ul>
+  </div>
+</div>
+
+</html>
