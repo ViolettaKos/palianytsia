@@ -63,7 +63,7 @@
             <li><a th:href="@{/guest/allCheesecakes}" th:text="#{cheesecakes}"/></li>
           </ul>
         </li>
-        <li><a href="#contact" th:text="#{contact}"/></li>
+        <li><a href="guest/contact" th:text="#{contact}"/></li>
       </ul>
 </nav><!-- .navbar -->
 
@@ -100,7 +100,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" href="user/profile">
               <i class="bi bi-person"></i>
-              <span th:text="#{myProfile}"/>
+              <span th:text="#{myProfile}" th:href="@{/user/profile}"/>
             </a>
           </li>
           <li>
@@ -110,7 +110,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" href="user/orders">
               <i class="bi bi-cart"></i>
-              <span th:text="#{myOrders}"/>
+              <span th:text="#{myOrders}" th:href="@{/user/orders}"/>
             </a>
           </li>
         </ul><!-- End Profile Dropdown Items -->

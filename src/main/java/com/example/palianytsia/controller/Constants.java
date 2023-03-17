@@ -8,11 +8,14 @@ public interface Constants {
     String CITY="city";
     String LANG="lang";
     String ITEM="item";
+    String ITEMS="items";
     String CURR_PAGE="currentPage";
     String TOTAL_PAGES="totalPages";
     String RECORDS_PER_PAGE="recordsPerPage";
     String SIZE="size";
     String SORT="sort";
+    String ASC="asc";
+    String DIR="dir";
 
     String ID="id";
     String COOKIES="cookies";

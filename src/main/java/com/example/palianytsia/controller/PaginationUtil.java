@@ -22,16 +22,17 @@ public class PaginationUtil {
 
 
 
-    public Map<String, Object> pagination(Page<Item> itemPage) {
-        List<Item> items = itemPage.getContent();  // to retrieve the List of items in the page
+    public Map<String, Object> pagination(Page<Item> itemPage, String direction) {
+        List<Item> items = itemPage.getContent();
         Map<String, Object> response = new HashMap<>();
 
-        response.put(ITEM, items);
+        response.put(ITEMS, items);
         response.put(CURR_PAGE, itemPage.getNumber());
         response.put(TOTAL_PAGES, itemPage.getTotalPages());
         response.put(RECORDS_PER_PAGE, itemPage.getPageable().getPageSize());
         response.put(SIZE, itemPage.getTotalElements());
-        response.put(SORT, itemPage.getSort());
+        response.put(SORT, itemPage.getSort().toString().split(":")[0]);
+        response.put(DIR, direction);
         return response;
     }
 }

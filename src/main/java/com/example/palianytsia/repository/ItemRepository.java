@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    List<Item> findAll();
+    Page<Item> findAll(Pageable pageable);
 
     Page<Item> findItemsByItemType(@Param("item_type") ItemType itemType, Pageable pageable);
     List<Item> findItemsByItemType(ItemType itemType);

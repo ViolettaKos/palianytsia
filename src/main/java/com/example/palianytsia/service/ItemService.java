@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ItemService {
-    List<Item> displayAllItems();
+    Page<Item> displayAllItems(Pageable pageable);
     Page<Item> displayCookies(Pageable pageable);
     List<Item> displayCakes();
     List<Item> displayCroissants();
@@ -15,4 +15,8 @@ public interface ItemService {
     List<Item> displayCheesecakes();
 
     Page<Item> displayThreeCookies();
+    Page<Item> displayThreeCakes();
+    Page<Item> displayThreeCroissants();
+    Page<Item> displayThreeCupcakes();
+    Page<Item> displayThreeCheesecakes();
 }

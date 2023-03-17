@@ -24,8 +24,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> displayAllItems() {
-        return itemRepository.findAll();
+    public Page<Item> displayAllItems(Pageable pageable) {
+        return itemRepository.findAll(pageable);
     }
 
     @Override
@@ -56,5 +56,25 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<Item> displayThreeCookies() {
         return itemRepository.findItemsByItemType(ItemType.COOKIE, PageRequest.of(0,3));
+    }
+
+    @Override
+    public Page<Item> displayThreeCakes() {
+        return itemRepository.findItemsByItemType(ItemType.CAKE, PageRequest.of(0,3));
+    }
+
+    @Override
+    public Page<Item> displayThreeCroissants() {
+        return itemRepository.findItemsByItemType(ItemType.CROISSANT, PageRequest.of(0,3));
+    }
+
+    @Override
+    public Page<Item> displayThreeCupcakes() {
+        return itemRepository.findItemsByItemType(ItemType.CUPCAKE, PageRequest.of(0,3));
+    }
+
+    @Override
+    public Page<Item> displayThreeCheesecakes() {
+        return itemRepository.findItemsByItemType(ItemType.CHEESECAKE, PageRequest.of(0,3));
     }
 }

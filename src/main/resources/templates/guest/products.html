@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Products</title>
 
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
 </head>
@@ -17,6 +17,7 @@
 
         <div class="section-header" style="padding-top: 50px">
             <p>Check Our <span>Delicious Baking</span></p>
+            <a th:href="@{/guest/allProducts}" style="text-decoration: underline; font-weight: bold; font-size: 16px;">VIEW ALL PRODUCTS</a>
         </div>
 
 
@@ -35,7 +36,13 @@
                         <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
                         <h4 th:text="${cookie.name}"></h4>
                         <p class="price" th:text="'$' + ${cookie.price}"/>
-
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${cookie.id}">Add to cart</a>
                     </div><!-- Menu Item -->
 
 
@@ -60,6 +67,13 @@
                         <img th:src="@{${cake.getImgURL()}}" class="menu-img img-fluid">
                         <h4 th:text="${cake.name}"></h4>
                         <p class="price" th:text="'$' + ${cake.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${cake.id}">Add to cart</a>
                     </div><!-- Menu Item -->
 
 
@@ -85,6 +99,13 @@
                         <img th:src="@{${croissant.getImgURL()}}" class="menu-img img-fluid">
                         <h4 th:text="${croissant.name}"></h4>
                         <p class="price" th:text="'$' + ${croissant.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${croissant.id}">Add to cart</a>
                     </div><!-- Menu Item -->
 
 
@@ -110,6 +131,13 @@
                         <img th:src="@{${cupcake.getImgURL()}}" class="menu-img img-fluid">
                         <h4 th:text="${cupcake.name}"></h4>
                         <p class="price" th:text="'$' + ${cupcake.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${cupcake.id}">Add to cart</a>
                     </div><!-- Menu Item -->
 
 
@@ -136,6 +164,13 @@
                         <img th:src="@{${cheesecake.getImgURL()}}" class="menu-img img-fluid">
                         <h4 th:text="${cheesecake.name}"></h4>
                         <p class="price" th:text="'$' + ${cheesecake.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${cheesecake.id}">Add to cart</a>
                     </div><!-- Menu Item -->
 
 
@@ -143,14 +178,6 @@
             </div><!-- End Starter Menu Content -->
 
         </div>
-
-
-
-
-
-
-
-
 
     </div>
 </section>

@@ -51,11 +51,31 @@ public class BasicGuestController {
     @GetMapping("/products")
     public String showProducts(Model model) {
         model.addAttribute(COOKIES, itemService.displayThreeCookies());
-        model.addAttribute(CAKES, itemService.displayCakes());
-        model.addAttribute(CROISSANTS, itemService.displayCroissants());
-        model.addAttribute(CUPCAKES, itemService.displayCupcakes());
-        model.addAttribute(CHEESECAKES, itemService.displayCheesecakes());
+        model.addAttribute(CAKES, itemService.displayThreeCakes());
+        model.addAttribute(CROISSANTS, itemService.displayThreeCroissants());
+        model.addAttribute(CUPCAKES, itemService.displayThreeCupcakes());
+        model.addAttribute(CHEESECAKES, itemService.displayThreeCheesecakes());
         return PRODUCTS_PAGE;
+    }
+
+    @GetMapping("/allProducts")
+    public String showAllProducts(Model model,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "6") int recordsPerPage,
+                                  @RequestParam(defaultValue = ID) String sort,
+                                  @RequestParam(defaultValue = ASC) String dir) {
+
+        Sort sorting = Sort.by(sort);
+        if (dir.equals(ASC)) {
+            sorting = sorting.ascending();
+        } else {
+            sorting = sorting.descending();
+        }
+        Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
+        Page<Item> itemPage = itemService.displayAllItems(pageable);
+        Map<String, Object> response = paginationUtil.pagination(itemPage, dir);
+        model.addAllAttributes(response);
+        return ALL_PRODUCTS_PAGE;
     }
 
 
@@ -63,12 +83,19 @@ public class BasicGuestController {
     public String showCookies(Model model,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "6") int recordsPerPage,
-                              @RequestParam(defaultValue = ID) String sort
+                              @RequestParam(defaultValue = ID) String sort,
+                              @RequestParam(defaultValue = ASC) String dir
                               ) {
         log.info("Page: "+page+" Records per page: "+recordsPerPage);
-        Pageable pageable = PageRequest.of(page, recordsPerPage, Sort.by(sort).ascending());
+        Sort sorting = Sort.by(sort);
+        if (dir.equals(ASC)) {
+            sorting = sorting.ascending();
+        } else {
+            sorting = sorting.descending();
+        }
+        Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
         Page<Item> itemPage = itemService.displayCookies(pageable);
-        Map<String, Object> response = paginationUtil.pagination(itemPage);
+        Map<String, Object> response = paginationUtil.pagination(itemPage, dir);
         model.addAllAttributes(response);
 
         return COOKIES_PAGE;

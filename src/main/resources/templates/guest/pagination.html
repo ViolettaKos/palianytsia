@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div class="pagination p1" th:fragment="pagination" id="pagination" th:if="${totalPages>1}" style="display: flex; justify-content: center; margin-top: 20px">
+<div class="pagination p1" th:fragment="pagination" id="pagination" th:if="${totalPages>1}" th:with="baseUrl=${baseUrl}" style="display: flex; justify-content: center; margin-top: 20px">
   <ul>
-    <a th:if = "${currentPage == 0 ? 'disabled' : ''}" th:href="@{/guest/allCookies(page=${currentPage - 1},recordsPerPage=${recordsPerPage}, sort=${sortBy})}">
+    <c:set var="baseUrl" value="@{'/guest/'+{#httpServletRequest.requestURI}+'?'}" />
+    <a th:if = "${currentPage == 0 ? 'disabled' : ''}" th:href="@{${baseUrl}(page=${currentPage - 1},recordsPerPage=${recordsPerPage}, sort=${sort}, dir=${dir})}">
       <li><</li>
     </a>
 
-    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i ? 'is-active' : ''}" th:href="@{/guest/allCookies(page=${i},recordsPerPage=${recordsPerPage}, sort=${sortBy})}" >
+    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i ? 'is-active' : ''}" th:href="@{${baseUrl}(page=${i},recordsPerPage=${recordsPerPage}, sort=${sort}, dir=${dir})}" >
       <li th:text="${i+1}"></li>
     </a>
 
-    <a th:if="${currentPage == totalPages - 1 ? 'disabled' : ''}" th:href="@{/guest/allCookies(page=${currentPage + 1},recordsPerPage=${recordsPerPage}, sort=${sortBy})}">
+    <a th:if="${currentPage == totalPages - 1 ? 'disabled' : ''}" th:href="@{${baseUrl}(page=${currentPage + 1},recordsPerPage=${recordsPerPage}, sort=${sort}, dir=${dir})}">
       <li>></li>
     </a>
   </ul>

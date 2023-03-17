@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Our products</title>
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+    <th:block th:insert="~{guest/sorter.html :: sorter-style}"></th:block>
+    <th:block th:insert="~{guest/sorter.html :: sorter-type-style}"></th:block>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+<!-- ======= Menu Section ======= -->
+<section id="menu" class="menu">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header" style="padding-top: 50px">
+            <p>Check Our <span>Delicious Baking</span></p>
+        </div>
+        <div style="text-align: center;">
+            <div th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
+            <div th:insert="~{guest/sorter.html :: records}" style="display: inline-block"></div>
+            <div th:insert="~{guest/sorter.html :: sorter-type}"></div>
+        </div>
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+            <div class="tab-pane fade active show" id="items">
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="item: ${items}">
+                        <img th:src="@{${item.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${item.name}"></h4>
+                        <p class="price" th:text="'$' + ${item.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected>QTY: 1</option>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${item.id}">Add to cart</a>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
+        </div>
+        <th:block th:insert="~{guest/pagination.html :: pagination(baseUrl='/guest/allProducts')}"></th:block>
+    </div>
+
+</section>
+
+
+<script>
+    $('.select-dropdown__button').on('click', function(){
+        $(this).next('.select-dropdown__list').toggleClass('active');
+    });
+
+    $('.select-dropdown__list-item').on('click', function(){
+        var itemValue = $(this).data('value');
+        console.log(itemValue);
+        $(this).closest('.select-dropdown').find('.select-dropdown__button span').text($(this).text()).parent().attr('data-value', itemValue);
+        $(this).closest('.select-dropdown__list').toggleClass('active');
+    });
+</script>
+</body>
+</html>
