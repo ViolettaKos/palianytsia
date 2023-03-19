@@ -20,7 +20,7 @@
         </div>
         <div style="text-align: center;">
             <div th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
-            <div th:insert="~{guest/sorter.html :: records}" style="display: inline-block"></div>
+            <div th:insert="~{guest/sorter.html :: records(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
             <div th:insert="~{guest/sorter.html :: sorter-type}"></div>
         </div>
         <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
@@ -59,11 +59,40 @@
     });
 
     $('.select-dropdown__list-item').on('click', function(){
-        var itemValue = $(this).data('value');
+        const itemValue = $(this).data('value');
         console.log(itemValue);
         $(this).closest('.select-dropdown').find('.select-dropdown__button span').text($(this).text()).parent().attr('data-value', itemValue);
         $(this).closest('.select-dropdown__list').toggleClass('active');
     });
 </script>
+<script>
+    $(function() {
+        // Get the current selected types from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedTypes = urlParams.get('type') ? urlParams.get('type').split(',') : [];
+
+        // Set the "checked" attribute of the checkboxes based on the selected types
+        $('.type-checkbox').each(function() {
+            if (selectedTypes.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
+
+        // Handle checkbox clicks
+        $('.type-checkbox').on('click', function() {
+            // Get the selected types
+            const selectedTypes = [];
+            $('.type-checkbox:checked').each(function() {
+                selectedTypes.push($(this).val());
+            });
+
+            // Submit the form with the selected types
+            const url = '/guest/allProducts?type=' + selectedTypes.join(',');
+            window.location.href = url;
+        });
+    });
+</script>
+
+
 </body>
 </html>

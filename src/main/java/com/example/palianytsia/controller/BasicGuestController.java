@@ -6,6 +6,7 @@ import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
 import com.example.palianytsia.model.Item;
+import com.example.palianytsia.model.ItemType;
 import com.example.palianytsia.model.UserRoles;
 import com.example.palianytsia.service.ItemService;
 import com.example.palianytsia.service.UserService;
@@ -21,10 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.example.palianytsia.controller.Constants.*;
 import static com.example.palianytsia.controller.PageConstants.*;
@@ -63,16 +61,27 @@ public class BasicGuestController {
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "6") int recordsPerPage,
                                   @RequestParam(defaultValue = ID) String sort,
-                                  @RequestParam(defaultValue = ASC) String dir) {
+                                  @RequestParam(defaultValue = ASC) String dir,
+                                  @RequestParam(required = false, value = "type") String[] types) {
 
+        System.out.println("Method allProducts");
         Sort sorting = Sort.by(sort);
         if (dir.equals(ASC)) {
             sorting = sorting.ascending();
         } else {
             sorting = sorting.descending();
         }
+
+        List<ItemType> selectedTypes = new ArrayList<>();
+        if (types != null) {
+            for (String type : types) {
+                for (String typePart : type.split(",")) {
+                selectedTypes.add(ItemType.valueOf(typePart.toUpperCase())); }
+            }
+        }
+
         Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
-        Page<Item> itemPage = itemService.displayAllItems(pageable);
+        Page<Item> itemPage = itemService.displayAllItems(selectedTypes, pageable);
         Map<String, Object> response = paginationUtil.pagination(itemPage, dir);
         model.addAllAttributes(response);
         return ALL_PRODUCTS_PAGE;

@@ -143,8 +143,8 @@
     <button href="#" role="button" data-value="" class="select-dropdown__button"><span>SORT BY: </span> <i class="zmdi zmdi-chevron-down"></i>
     </button>
     <ul class="select-dropdown__list">
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''"  class="select-dropdown__list-item">Name</li>
-        <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"  class="select-dropdown__list-item">Lowest Price</li>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''" class="select-dropdown__list-item">Name</li>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"  class="select-dropdown__list-item">Lowest Price</li>
       <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=desc\''"  class="select-dropdown__list-item">Highest Price</li>
 
     </ul>
@@ -152,15 +152,14 @@
 </div>
 
 
-<div class="containerSorter" th:fragment="records" id="records">
+<div class="containerSorter" th:fragment="records" id="records" th:with="baseUrl=${baseUrl}">
   <div class="select-dropdown">
     <button href="#" role="button" data-value="" class="select-dropdown__button" id="rec"><span>RECORDS: </span> <i class="zmdi zmdi-chevron-down"></i>
     </button>
     <ul class="select-dropdown__list">
-      <li th:attr="onclick='javascript:location.href=\'/guest/allCookies?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort='+${recordsPerPage}"  class="select-dropdown__list-item">6</li>
-      <li th:attr="onclick='javascript:location.href=\'/guest/allCookies?page='+${currentPage}+'&amp;recordsPerPage=9&amp;sort='+${recordsPerPage}"  class="select-dropdown__list-item">9</li>
-      <li th:attr="onclick='javascript:location.href=\'/guest/allCookies?page='+${currentPage}+'&amp;recordsPerPage=12&amp;sort='+${recordsPerPage}"  class="select-dropdown__list-item">12</li>
-
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">6</li>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=9&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">9</li>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=12&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">12</li>
     </ul>
   </div>
 </div>
@@ -169,23 +168,23 @@
 <div class="new" th:fragment="sorter-type" id="sorter-type">
   <form>
     <div class="form-group">
-      <input type="checkbox" id="cookie">
+      <input type="checkbox" id="cookie" value="COOKIE" class="type-checkbox">
       <label for="cookie">Cookie</label>
     </div>
     <div class="form-group">
-      <input type="checkbox" id="cakes">
+      <input type="checkbox" id="cakes"  value="CAKE" class="type-checkbox">
       <label for="cakes">Cakes</label>
     </div>
     <div class="form-group">
-      <input type="checkbox" id="cupcakes">
+      <input type="checkbox" id="cupcakes" value="CUPCAKE" class="type-checkbox">
       <label for="cupcakes">Cupcakes</label>
     </div>
     <div class="form-group">
-      <input type="checkbox" id="croissants">
+      <input type="checkbox" id="croissants" value="CROISSANT" class="type-checkbox">
       <label for="croissants">Croissants</label>
     </div>
     <div class="form-group">
-      <input type="checkbox" id="cheesecakes">
+      <input type="checkbox" id="cheesecakes" value="CHEESECAKE" class="type-checkbox">
       <label for="cheesecakes">Cheesecakes</label>
     </div>
   </form>
