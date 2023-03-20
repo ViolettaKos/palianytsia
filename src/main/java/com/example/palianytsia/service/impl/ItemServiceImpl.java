@@ -25,6 +25,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Item findById(Long id) {
+        return itemRepository.findItemById(id);
+    }
+
+    @Override
     public Page<Item> displayAllItems(List<ItemType> selectedTypes, Pageable pageable) {
         Page<Item> itemPage;
         if(!selectedTypes.isEmpty()) {

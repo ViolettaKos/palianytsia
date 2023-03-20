@@ -7,6 +7,7 @@ public interface PageConstants {
     String PRODUCTS_PAGE="guest/products";
     String COOKIES_PAGE="guest/allCookies";
     String ALL_PRODUCTS_PAGE="guest/allProductsPage";
+    String PRODUCT_PAGE="guest/productPage";
 
     String REDIRECT_SIGNIN="redirect:/guest/signIn";
     String REDIRECT_PROFILE="redirect:/user/profile";

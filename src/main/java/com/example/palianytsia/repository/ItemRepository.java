@@ -19,5 +19,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Page<Item> findItemsByItemType(@Param("item_type") ItemType itemType, Pageable pageable);
     List<Item> findItemsByItemType(ItemType itemType);
+    Item findItemById(Long id);
 
 }

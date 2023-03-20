@@ -110,6 +110,13 @@ public class BasicGuestController {
         return COOKIES_PAGE;
     }
 
+    @GetMapping("/productPage")
+    public String toProductPage(Model model, @RequestParam(ID) Long id) {
+        log.info("Product id: "+id);
+        model.addAttribute(ITEM, itemService.findById(id));
+        return PRODUCT_PAGE;
+    }
+
 
 
     @GetMapping("/signIn")

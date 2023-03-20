@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Page</title>
+  <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+  <style>
+    .container {
+      padding: 15px;
+      display: flex;
+    }
+    .left-column {
+      width: 40%;
+      position: relative;
+    }
+
+    .right-column {
+      width: 35%;
+      margin-top: 60px;
+      margin-left: 250px;
+    }
+    .product-price {
+      display: flex;
+      align-items: center;
+    }
+    .left-column img {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 1;
+      transition: all 0.3s ease;
+    }
+
+    .product-description {
+      border-bottom: 1px solid #E1E8EE;
+      margin-bottom: 20px;
+    }
+    .product-description span {
+      font-size: 16px;
+      color: red;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .product-description h1 {
+      margin-top: 50px;
+      font-weight: 300;
+      font-size: 52px;
+      color: #43484D;
+      letter-spacing: -2px;
+    }
+    .product-description p {
+      font-size: 18px;
+      font-weight: 300;
+      color: #86939E;
+      line-height: 24px;
+    }
+    .select-qty {
+      font-size: 14px;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 8px 3px;
+      border-radius: 10px;
+    }
+    .btn-add-to-cart:hover,
+    .btn-add-to-cart:focus:hover {
+      color: #fff;
+      background: rgba(206, 18, 18, 0.8);
+    }
+    .btn-add-to-cart,
+    .btn-add-to-cart:focus {
+      font-size: 18px;
+      color: #fff;
+      background: var(--color-primary);
+      padding: 8px 40px;
+      margin-left: 20px;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+    .price {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+<div class="container" style="margin-top: 100px">
+  <div class="left-column">
+    <img th:src="@{${item.getImgURL()}}">
+  </div>
+<div class="right-column">
+  <div class="product-description">
+    <span th:text="${item.itemType}"/>
+    <h1 th:text="${item.name}"></h1>
+    <p th:text="${item.description}"></p>
+  </div>
+  <div class="product-price">
+    <p class="price" th:text="'$' + ${item.price}"/>
+  </div>
+  <select class="select-qty">
+    <option value="1" selected>QTY: 1</option>
+    <th:block th:each="i : ${#numbers.sequence(2,12)}">
+      <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+    </th:block>
+  </select>
+  <a class="btn-add-to-cart" th:data-id="${item.id}">Add to cart</a>
+</div>
+</div>
+
+
+</body>
+</html>
