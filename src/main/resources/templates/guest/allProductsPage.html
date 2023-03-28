@@ -7,10 +7,26 @@
     <th:block th:insert="~{guest/sorter.html :: sorter-style}"></th:block>
     <th:block th:insert="~{guest/sorter.html :: sorter-type-style}"></th:block>
 </head>
+<style>
+    .my-btn{
+        font-size: 14px;
+        border-radius: 20px;
+        transition: 0.3s;
+        padding: 8px 15px;
+        margin-left: 20px;
+    }
+</style>
 <body>
 <!-- ======= Header ======= -->
 <header th:insert="~{guest/head.html :: header}"></header>
 
+<div th:if="${message}" style="margin-top: 100px; margin-bottom: -100px">
+    <hr>
+    <div class="alert alert-success" style="text-align: center">
+        <strong th:text="#{${message}}"></strong>
+    </div>
+    <hr>
+</div>
 <!-- ======= Menu Section ======= -->
 <section id="menu" class="menu">
     <div class="container" data-aos="fade-up">
@@ -35,13 +51,17 @@
                         <h4 th:text="${item.name}"></h4>
                         </a>
                         <p class="price" th:text="'$' + ${item.price}"/>
-                        <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
-                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
-                            </th:block>
-                        </select>
-                        <a class="btn-add-to-cart" th:data-id="${item.id}">Add to cart</a>
+                        <form th:action="@{/guest/addItem}" method="post" th:id="addForm">
+                            <input type="hidden" name="itemId" th:value="${item.id}" >
+                            <select name="quantity" class="select-qty">
+                                <option value="1" selected>QTY: 1</option>
+                                <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                    <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                </th:block>
+                            </select>
+                            <button class="my-btn" type="submit">Add to cart</button>
+
+                        </form>
                     </div><!-- Menu Item -->
 
 
@@ -94,6 +114,8 @@
         });
     });
 </script>
+
+
 
 
 </body>

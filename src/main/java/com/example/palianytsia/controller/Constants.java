@@ -9,6 +9,8 @@ public interface Constants {
     String LANG="lang";
     String ITEM="item";
     String ITEMS="items";
+    String TOTAL="total";
+    String CART_COUNT="cartCount";
     String CURR_PAGE="currentPage";
     String TOTAL_PAGES="totalPages";
     String RECORDS_PER_PAGE="recordsPerPage";

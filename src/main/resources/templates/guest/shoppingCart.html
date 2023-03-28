@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping cart</title>
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block></head>
+<style>
+    .select-qty {
+        font-size: 14px;
+        color: #1a1a1a;
+        background: #fff;
+        padding: 6px 3px;
+        border-radius: 15px;
+    }
+    .btn-add-to-cart:hover,
+    .btn-add-to-cart:focus:hover {
+        color: #fff;
+        background: rgba(206, 18, 18, 0.8);
+    }
+    .btn-add-to-cart,
+    .btn-add-to-cart:focus {
+        font-size: 18px;
+        color: #fff;
+        background: var(--color-primary);
+        padding: 12px 30px;
+        margin: 12px 20px 40px 20px;
+        /*margin-left: 20px;*/
+        border-radius: 60px;
+        transition: 0.3s;
+        vertical-align: middle;
+    }
+    /* The popup form - hidden by default */
+    .form-popup {
+        display: none;
+        position: fixed;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+        border-radius: 10px;
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+        max-width: 400px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    /* Full-width input fields */
+    .form-container input[type=text], .form-container select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #f1f1f1;
+        border-radius: 5px;
+    }
+
+    /* Set a style for the submit/login button */
+    .form-container .btn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    /* Add a red background color to the cancel button */
+    .form-container .cancel {
+        background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover, .open-button:hover {
+        opacity: 1;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+</style>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+
+<div class="section-header" style="padding-top: 100px">
+    <p>Shopping <span>Cart</span></p>
+</div>
+<div style="margin-top: 20px; margin-left: 100px;" th:if="${session.cartCount ne 0}">
+    <div class="col-lg-4 menu-item" th:each="item: ${items}" style="margin-top: 40px">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+            <img th:src="@{${item.getKey().getImgURL()}}" class="menu-img img-fluid" style="max-width:80%" >
+            </div>
+            <div class="col-md-8">
+            <h4 th:text="${item.getKey().name}" class="align-middle" style="display: inline-block;"></h4>
+                <a onclick="openDeleteForm(this)" th:data-id="${item.getKey().id}" style="text-decoration: underline; font-weight: bold; font-size: 14px; margin-left: 40px">REMOVE</a>
+                <p class="price align-middle" th:text="'QTY: '+${item.getValue()}" style="margin-bottom: 0;"/>
+                <p class="price align-middle" th:text="${item.getValue()}+'×'+ ${item.getKey().price}+'= $'+${item.getKey().price.multiply(item.getValue())}"/>
+                <form th:action="@{/guest/changeAmount}" method="post">
+                <select name="quantity" id="test" class="select-qty" onchange="submit()">
+                    <option th:value="${item.getValue()}" th:text="'QTY: '+${item.getValue()}" selected></option>
+                    <th:block th:each="i : ${#numbers.sequence(1,12)}">
+                        <option th:unless="${i == item.getValue()}" th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                    </th:block>
+                </select>
+                    <input type="hidden" th:value="${item.getKey().id}" name="id" />
+                    <button type="submit" style="display: none"></button>
+                </form>
+            </div>
+
+    </div><!-- Menu Item -->
+    </div>
+    <hr style="margin-right: 100px"/>
+    <div style="margin-top: 50px;">
+    <h3 style="display: inline-block;">Total:</h3>
+    <h5 th:text="'$'+${total}" style="float: right; display: inline-block; margin-right: 100px"/>
+    </div>
+    <a class="btn-add-to-cart" href="" style="float: right; margin-top: 20px; margin-right: 100px">Proceed to checkout</a>
+</div>
+<div th:if="${session.cartCount eq 0}" class="section-header" style="display: flex; align-items: center; justify-content: center; height: 50vh;">
+    <h4 style="font-family: Nunito,cursive; font-weight: 400; font-size: 24px; margin: 0;">No items in the cart!</h4>
+</div>
+
+
+
+<div class="form-popup" id="deleteForm">
+    <form class="form-container" th:action="@{/guest/removeItem}" method="post">
+        <h2 class="form-header">Delete Item</h2>
+        <p>Are you sure you want to delete this item?</p>
+
+        <input type="hidden" id="id" name="id" value="" />
+        <button type="submit" id="delete-btn" class="btn">Delete</button>
+        <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')">Close</button>
+    </form>
+</div>
+
+<script>
+
+    function closeTheForm() {
+        document.getElementById('deleteForm').style.display = "none";
+    }
+    function openDeleteForm(item) {
+        document.getElementById('deleteForm').style.display="block";
+
+        document.getElementById("id").value =item.dataset.id;
+        console.log("id: "+item.dataset.id);
+    }
+
+</script>
+</body>
+</html>

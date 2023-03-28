@@ -9,7 +9,10 @@ import com.example.palianytsia.model.Item;
 import com.example.palianytsia.model.ItemType;
 import com.example.palianytsia.model.UserRoles;
 import com.example.palianytsia.service.ItemService;
+import com.example.palianytsia.service.ShoppingCartService;
 import com.example.palianytsia.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.example.palianytsia.controller.Constants.*;
@@ -34,9 +39,10 @@ public class BasicGuestController {
 
     @Autowired
     UserService userService;
-
     @Autowired
     ItemService itemService;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
    private static final PaginationUtil paginationUtil=new PaginationUtil();
 
@@ -44,6 +50,59 @@ public class BasicGuestController {
     public String goHome(Model model, Locale locale) {
         model.addAttribute(LANG, locale.getLanguage());
         return MAIN_PAGE;
+    }
+
+    @GetMapping("/count")
+    @ResponseBody
+    public Integer count() {
+        int qty=shoppingCartService.getQty();
+        System.out.println("my qty: "+qty);
+        return qty;
+    }
+
+    @GetMapping("/getCart")
+    public String getCart(Model model) {
+        model.addAttribute(ITEMS, shoppingCartService.getProductsInCart());
+        BigDecimal total = shoppingCartService.getTotal();
+        model.addAttribute(TOTAL, total);
+        System.out.println("Total sum: " + total);
+        return CART_PAGE;
+    }
+
+    @PostMapping ("/changeAmount")
+    public String changeQty(@RequestParam("quantity") int qty, @RequestParam(ID) Long itemId, HttpServletRequest request) {
+        System.out.println("quantity to be: "+qty);
+        System.out.println("id: "+itemId);
+        Item item=itemService.findById(itemId);
+        shoppingCartService.changeQty(item, qty);
+        request.getSession().setAttribute(CART_COUNT, shoppingCartService.getQty());
+        return REDIRECT_CART;
+    }
+
+    @PostMapping("/removeItem")
+    public String removeItem(@RequestParam(ID) long id, HttpServletRequest request) {
+        System.out.println("id: "+id);
+        Item item=itemService.findById(id);
+        shoppingCartService.removeItem(item);
+        request.getSession().setAttribute(CART_COUNT, shoppingCartService.getQty());
+        return REDIRECT_CART;
+    }
+
+    @PostMapping("/addItem")
+    public String addItem(@RequestParam("itemId") Long itemId, @RequestParam("quantity") Integer qty,
+                          RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        System.out.println("item id: " + itemId + " qty: " + qty);
+        Item item = itemService.findById(itemId);
+        shoppingCartService.addItem(item, qty);
+        redirectAttributes.addFlashAttribute(MSG, "warn.added");
+
+        String referer = request.getHeader("Referer");
+        System.out.println("Referer: " + referer);
+
+        int cartCount=shoppingCartService.getQty();
+        HttpSession session = request.getSession();
+        session.setAttribute(CART_COUNT, cartCount);
+        return "redirect:" + referer;
     }
 
     @GetMapping("/products")

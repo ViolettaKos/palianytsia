@@ -8,8 +8,10 @@ public interface PageConstants {
     String COOKIES_PAGE="guest/allCookies";
     String ALL_PRODUCTS_PAGE="guest/allProductsPage";
     String PRODUCT_PAGE="guest/productPage";
+    String CART_PAGE="guest/shoppingCart";
 
     String REDIRECT_SIGNIN="redirect:/guest/signIn";
+    String REDIRECT_CART="redirect:/guest/getCart";
     String REDIRECT_PROFILE="redirect:/user/profile";
 
 
