@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Product Page</title>
+    <title th:text="#{productPage}"></title>
   <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
   <style>
     .container {
@@ -96,19 +96,19 @@
 <div class="right-column">
   <div class="product-description">
     <span th:text="${item.itemType}"/>
-    <h1 th:text="${item.name}"></h1>
-    <p th:text="${item.description}"></p>
+    <h1 th:text="${item.name}"/>
+    <p th:text="${item.description}"/>
   </div>
   <div class="product-price">
     <p class="price" th:text="'$' + ${item.price}"/>
   </div>
   <select class="select-qty">
-    <option value="1" selected>QTY: 1</option>
+    <option value="1" selected th:text="#{qty}+':1'"/>
     <th:block th:each="i : ${#numbers.sequence(2,12)}">
-      <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+      <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
     </th:block>
   </select>
-  <a class="btn-add-to-cart" th:data-id="${item.id}">Add to cart</a>
+  <a class="btn-add-to-cart" th:data-id="${item.id}" th:text="#{addToCart}"/>
 </div>
 </div>
 

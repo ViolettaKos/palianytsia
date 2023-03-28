@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Our products</title>
+    <title th:text="#{our.products}"/>
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
     <th:block th:insert="~{guest/sorter.html :: sorter-style}"></th:block>
     <th:block th:insert="~{guest/sorter.html :: sorter-type-style}"></th:block>
@@ -32,7 +32,7 @@
     <div class="container" data-aos="fade-up">
 
         <div class="section-header" style="padding-top: 50px">
-            <p>Check Our <span>Delicious Baking</span></p>
+            <p th:text="#{checkOur}"> <span th:text="#{deliciousBaking}"/></p>
         </div>
         <div style="text-align: center;">
             <div th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
@@ -48,18 +48,18 @@
                     <div class="col-lg-4 menu-item" th:each="item: ${items}">
                         <a th:href="@{/guest/productPage(id=${item.id})}">
                         <img th:src="@{${item.getImgURL()}}" class="menu-img img-fluid">
-                        <h4 th:text="${item.name}"></h4>
+                        <h4 th:text="${item.name}"/>
                         </a>
                         <p class="price" th:text="'$' + ${item.price}"/>
                         <form th:action="@{/guest/addItem}" method="post" th:id="addForm">
                             <input type="hidden" name="itemId" th:value="${item.id}" >
                             <select name="quantity" class="select-qty">
-                                <option value="1" selected>QTY: 1</option>
+                                <option value="1" selected th:text="#{qty}+':1'"></option>
                                 <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                    <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                    <option th:value="${i}" th:text="#{qty}+ ' ' + ${i}"></option>
                                 </th:block>
                             </select>
-                            <button class="my-btn" type="submit">Add to cart</button>
+                            <button class="my-btn" type="submit" th:text="#{addToCart}"/>
 
                         </form>
                     </div><!-- Menu Item -->

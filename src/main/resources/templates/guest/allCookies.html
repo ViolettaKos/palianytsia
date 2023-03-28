@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cookies</title>
+    <title th:text="#{cookies}"/>
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
     <th:block th:insert="~{guest/sorter.html :: sorter-style}"></th:block>
 </head>
@@ -15,7 +15,7 @@
     <div class="container" data-aos="fade-up">
 
         <div class="section-header" style="padding-top: 50px">
-            <p>Best <span>Cookies Delivery</span></p>
+            <p th:text="#{best}"> <span th:text="#{cookiesDelivery}"/></p>
         </div>
 
 <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
@@ -23,7 +23,7 @@
     <div class="tab-pane fade active show" id="cookies">
 
         <div class="tab-header text-center">
-            <h3>Cookies</h3>
+            <h3 th:text="#{cookies}"/>
         </div>
 
         <th:block th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allCookies')}"></th:block>
@@ -32,15 +32,15 @@
 
             <div class="col-lg-4 menu-item" th:each="cookie: ${items}">
                 <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
-                <h4 th:text="${cookie.name}"></h4>
+                <h4 th:text="${cookie.name}"/>
                 <p class="price" th:text="'$' + ${cookie.price}"/>
                 <select class="select-qty">
-                    <option value="1" selected>QTY: 1</option>
+                    <option value="1" selected th:text="#{qty}+':1'"/>
                     <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                        <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                        <option th:value="${i}" th:text="#{qty} + ' '+ ${i}"></option>
                     </th:block>
                 </select>
-                <a class="btn-add-to-cart" th:data-id="${cookie.id}">Add to cart</a>
+                <a class="btn-add-to-cart" th:data-id="${cookie.id}" th:text="#{addToCart}" />
             </div><!-- Menu Item -->
 
 

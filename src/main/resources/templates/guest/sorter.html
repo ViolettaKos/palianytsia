@@ -140,13 +140,12 @@
 
 <div class="containerSorter" th:fragment="sorter" id="sorter" th:with="baseUrl=${baseUrl}">
   <div class="select-dropdown">
-    <button href="#" role="button" data-value="" class="select-dropdown__button"><span>SORT BY: </span> <i class="zmdi zmdi-chevron-down"></i>
+    <button href="#" role="button" data-value="" class="select-dropdown__button"><span th:text="#{sortBy}"> </span> <i class="zmdi zmdi-chevron-down"></i>
     </button>
     <ul class="select-dropdown__list">
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''" class="select-dropdown__list-item">Name</li>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"  class="select-dropdown__list-item">Lowest Price</li>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=desc\''"  class="select-dropdown__list-item">Highest Price</li>
-
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''" class="select-dropdown__list-item" th:text="#{name}"/>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"  class="select-dropdown__list-item" th:text="#{lowestPrice}"/>
+      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=desc\''"  class="select-dropdown__list-item" th:text="#{highestPrice}"/>
     </ul>
   </div>
 </div>
@@ -154,7 +153,7 @@
 
 <div class="containerSorter" th:fragment="records" id="records" th:with="baseUrl=${baseUrl}">
   <div class="select-dropdown">
-    <button href="#" role="button" data-value="" class="select-dropdown__button" id="rec"><span>RECORDS: </span> <i class="zmdi zmdi-chevron-down"></i>
+    <button href="#" role="button" data-value="" class="select-dropdown__button" id="rec"><span th:text="#{records}"> </span> <i class="zmdi zmdi-chevron-down"></i>
     </button>
     <ul class="select-dropdown__list">
       <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">6</li>
@@ -169,23 +168,23 @@
   <form>
     <div class="form-group">
       <input type="checkbox" id="cookie" value="COOKIE" class="type-checkbox">
-      <label for="cookie">Cookie</label>
+      <label for="cookie" th:text="#{cookies}"/>
     </div>
     <div class="form-group">
       <input type="checkbox" id="cakes"  value="CAKE" class="type-checkbox">
-      <label for="cakes">Cakes</label>
+      <label for="cakes" th:text="#{cakes}"/>
     </div>
     <div class="form-group">
       <input type="checkbox" id="cupcakes" value="CUPCAKE" class="type-checkbox">
-      <label for="cupcakes">Cupcakes</label>
+      <label for="cupcakes" th:text="#{cupcakes}"/>
     </div>
     <div class="form-group">
       <input type="checkbox" id="croissants" value="CROISSANT" class="type-checkbox">
-      <label for="croissants">Croissants</label>
+      <label for="croissants" th:text="#{croissants}"/>
     </div>
     <div class="form-group">
       <input type="checkbox" id="cheesecakes" value="CHEESECAKE" class="type-checkbox">
-      <label for="cheesecakes">Cheesecakes</label>
+      <label for="cheesecakes" th:text="#{cheesecakes}"/>
     </div>
   </form>
 </div>

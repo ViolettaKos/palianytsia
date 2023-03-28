@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Products</title>
+    <title th:text="#{our.products}"/>
 
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
 </head>
@@ -16,8 +16,8 @@
     <div class="container" data-aos="fade-up">
 
         <div class="section-header" style="padding-top: 50px">
-            <p>Check Our <span>Delicious Baking</span></p>
-            <a th:href="@{/guest/allProducts}" style="text-decoration: underline; font-weight: bold; font-size: 16px;">VIEW ALL PRODUCTS</a>
+            <p th:text="#{checkOur}"> <span th:text="#{deliciousBaking}"/></p>
+            <a th:href="@{/guest/allProducts}" style="text-decoration: underline; font-weight: bold; font-size: 16px;" th:text="#{viewAll}"/>
         </div>
 
 
@@ -26,8 +26,8 @@
             <div class="tab-pane fade active show" id="cookies">
 
                 <div class="tab-header text-center">
-                    <h3>Cookies</h3>
-                    <a th:href="@{/guest/allCookies}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                    <h3 th:text="#{cookies}"/>
+                    <a th:href="@{/guest/allCookies}" style="text-decoration: underline; font-weight: bold; font-size: 16px" th:text="#{viewMore}"/>
                 </div>
 
                 <div class="row gy-5">
@@ -37,12 +37,12 @@
                         <h4 th:text="${cookie.name}"></h4>
                         <p class="price" th:text="'$' + ${cookie.price}"/>
                         <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
+                            <option value="1" selected th:text="#{qty}+':1'"/>
                             <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
                             </th:block>
                         </select>
-                        <a class="btn-add-to-cart" th:data-id="${cookie.id}">Add to cart</a>
+                        <a class="btn-add-to-cart" th:data-id="${cookie.id}" th:text="#{addToCart}"/>
                     </div><!-- Menu Item -->
 
 
@@ -57,8 +57,8 @@
             <div class="tab-pane fade active show" id="cakes">
 
                 <div class="tab-header text-center">
-                    <h3>Cakes</h3>
-                    <a th:href="@{/guest/allCakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                    <h3 th:text="#{cakes}"/>
+                    <a th:href="@{/guest/allCakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px" th:text="#{viewMore}"/>
                 </div>
 
                 <div class="row gy-5">
@@ -68,12 +68,12 @@
                         <h4 th:text="${cake.name}"></h4>
                         <p class="price" th:text="'$' + ${cake.price}"/>
                         <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
+                            <option value="1" selected th:text="#{qty}+':1'"/>
                             <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
                             </th:block>
                         </select>
-                        <a class="btn-add-to-cart" th:data-id="${cake.id}">Add to cart</a>
+                        <a class="btn-add-to-cart" th:data-id="${cake.id}" th:text="#{addToCart}"/>
                     </div><!-- Menu Item -->
 
 
@@ -89,23 +89,23 @@
             <div class="tab-pane fade active show" id="croissants">
 
                 <div class="tab-header text-center">
-                    <h3>Croissants</h3>
-                    <a th:href="@{/guest/allCroissants}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                    <h3 th:text="#{croissants}"/>
+                    <a th:href="@{/guest/allCroissants}" style="text-decoration: underline; font-weight: bold; font-size: 16px" th:text="#{viewMore}"/>
                 </div>
 
                 <div class="row gy-5">
 
                     <div class="col-lg-4 menu-item" th:each="croissant: ${croissants}">
                         <img th:src="@{${croissant.getImgURL()}}" class="menu-img img-fluid">
-                        <h4 th:text="${croissant.name}"></h4>
+                        <h4 th:text="${croissant.name}"/>
                         <p class="price" th:text="'$' + ${croissant.price}"/>
                         <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
+                            <option value="1" selected th:text="#{qty}+':1'"/>
                             <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
                             </th:block>
                         </select>
-                        <a class="btn-add-to-cart" th:data-id="${croissant.id}">Add to cart</a>
+                        <a class="btn-add-to-cart" th:data-id="${croissant.id}" th:text="#{addToCart}"/>
                     </div><!-- Menu Item -->
 
 
@@ -121,8 +121,8 @@
             <div class="tab-pane fade active show" id="cupcakes">
 
                 <div class="tab-header text-center">
-                    <h3>Cupcakes</h3>
-                    <a th:href="@{/guest/allCupcakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                    <h3 th:text="#{cupcakes}"/>
+                    <a th:href="@{/guest/allCupcakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px" th:text="#{viewMore}"/>
                 </div>
 
                 <div class="row gy-5">
@@ -132,12 +132,12 @@
                         <h4 th:text="${cupcake.name}"></h4>
                         <p class="price" th:text="'$' + ${cupcake.price}"/>
                         <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
+                            <option value="1" selected th:text="#{qty}+':1'"/>
                             <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
                             </th:block>
                         </select>
-                        <a class="btn-add-to-cart" th:data-id="${cupcake.id}">Add to cart</a>
+                        <a class="btn-add-to-cart" th:data-id="${cupcake.id}" th:text="#{addToCart}"/>
                     </div><!-- Menu Item -->
 
 
@@ -154,8 +154,8 @@
             <div class="tab-pane fade active show" id="cheesecakes">
 
                 <div class="tab-header text-center">
-                    <h3>Cheesecakes</h3>
-                    <a th:href="@{/guest/allCheesecakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px">VIEW MORE</a>
+                    <h3 th:text="#{cheesecakes}"/>
+                    <a th:href="@{/guest/allCheesecakes}" style="text-decoration: underline; font-weight: bold; font-size: 16px" th:text="#{viewMore}"/>
                 </div>
 
                 <div class="row gy-5">
@@ -165,12 +165,12 @@
                         <h4 th:text="${cheesecake.name}"></h4>
                         <p class="price" th:text="'$' + ${cheesecake.price}"/>
                         <select class="select-qty">
-                            <option value="1" selected>QTY: 1</option>
+                            <option value="1" selected th:text="#{qty}+':1'"/>
                             <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                                <option th:value="${i}" th:text="'QTY: ' + ${i}"></option>
+                                <option th:value="${i}" th:text="#{qty} + ' ' + ${i}"/>
                             </th:block>
                         </select>
-                        <a class="btn-add-to-cart" th:data-id="${cheesecake.id}">Add to cart</a>
+                        <a class="btn-add-to-cart" th:data-id="${cheesecake.id}" th:text="#{addToCart}"/>
                     </div><!-- Menu Item -->
 
 

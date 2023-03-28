@@ -159,8 +159,8 @@
                                 <li th:each="location : ${user.locations}">
                                     <span th:text="${location.id}"></span>
                                     <span th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></span>
-                                    <a onclick="openEditDeleteForm('editForm', this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00">Edit</a>
-                                    <a onclick="openEditDeleteForm('deleteForm', this)" th:data-id="${location.id}" style="color: red; text-decoration: underline">Delete</a>
+                                    <a onclick="openEditDeleteForm('editForm', this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00" th:text="#{edit}"/>
+                                    <a onclick="openEditDeleteForm('deleteForm', this)" th:data-id="${location.id}" style="color: red; text-decoration: underline" th:text="#{delete}"/>
                                 </li>
                             </div>
                             <div class="col-lg-9 col-md-8" th:if="${user.locations.isEmpty()}"
@@ -168,7 +168,7 @@
                         </div>
                         <div class="text-center" th:if="${user.locations.size()==5}">
                             <button type="submit" class="btn-profile" disabled th:text="#{addAddress}"/>
-                            <p style="margin-top: 10px; font-style: italic; color: #a52834">You can only have up to 5 addresses!</p>
+                            <p style="margin-top: 10px; font-style: italic; color: #a52834" th:text="#{limitAddress}"/>
                         </div>
                         <div class="text-center" th:if="${user.locations.size()<5}">
                             <button type="submit" class="btn-profile" onclick="openForm()"  th:text="#{addAddress}"/>
@@ -251,7 +251,7 @@
                         <form th:action="@{/user/changePassword}" method="post" th:object="${user}">
 
                             <div class="row mb-3">
-                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{newPass}"></label>
+                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{newPass}"/>
                                 <div class="col-md-8 col-lg-9">
                                     <input th:field="*{newPass}" type="password" class="form-control" id="newPassword" required>
                                 </div>
@@ -283,8 +283,8 @@
 </main><!-- End #main -->
 <div class="form-popup" id="popupForm">
     <form class="form-container" th:action="@{/user/addAddress}" method="post">
-        <h2 class="form-header">New Address</h2>
-        <p>Please fill all fields to add a new address to your profile.</p>
+        <h2 class="form-header" th:text="#{newAddress}"/>
+        <p th:text="#{fillAll}"/>
 
         <label><b th:text="#{city}"/></label>
         <select name="city">
@@ -292,22 +292,22 @@
         </select>
 
         <label><b th:text="#{street}"/></label>
-        <input type="text" placeholder="Enter Street" name="street" required>
+        <input type="text" placeholder="#{enterStreet}" name="street" required>
 
         <label><b th:text="#{house}"/></label>
-        <input type="text" placeholder="Enter House number" name="house" required>
+        <input type="text" placeholder="#{enterHouse}" name="house" required>
 
         <label><b th:text="#{apartment}"/></label>
-        <input type="text" placeholder="Enter apartment number" name="apartment" required>
+        <input type="text" placeholder="#{enterApartment}" name="apartment" required>
 
-        <button type="submit" class="btn">Add Address</button>
-        <button type="button" class="btn cancel" onclick="closeTheForm('popupForm')">Close</button>
+        <button type="submit" class="btn" th:text="#{addAddress}"/>
+        <button type="button" class="btn cancel" onclick="closeTheForm('popupForm')" th:text="#{close}"/>
     </form>
 </div>
 
 <div class="form-popup" id="editForm">
     <form class="form-container" th:action="@{/user/editAddress}" method="post">
-        <h2 class="form-header">Edit Address</h2>
+        <h2 class="form-header" th:text="#{editAddress}"/>
 
         <label><b th:text="#{city}"/></label>
         <select name="city" id="city-input">
@@ -324,18 +324,18 @@
         <input type="text" id="apartment-input" name="apartment" required>
 
         <input type="hidden" id="id" name="id" value="" />
-        <button type="submit" class="btn">Save Changes</button>
-        <button type="button" class="btn cancel" onclick="closeTheForm('editForm')">Close</button>
+        <button type="submit" class="btn" th:text="#{saveChanges}"/>
+        <button type="button" class="btn cancel" onclick="closeTheForm('editForm')" th:text="#{close}"/>
     </form>
 </div>
 <div class="form-popup" id="deleteForm">
     <form class="form-container" th:action="@{/user/deleteAddress}" method="post">
-        <h2 class="form-header">Delete Address</h2>
-        <p>Are you sure you want to delete this address?</p>
+        <h2 class="form-header" th:text="#{deleteAddress}"/>
+        <p th:text="#{warnDelete}"/>
 
         <input type="hidden" id="locationId-input" name="id" value="" />
-        <button type="submit" id="delete-btn" class="btn">Delete</button>
-        <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')">Close</button>
+        <button type="submit" id="delete-btn" class="btn" th:text="#{delete}"/>
+        <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')" th:text="#{close}"/>
     </form>
 </div>
 

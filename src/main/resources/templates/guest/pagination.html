@@ -3,7 +3,6 @@
 
 <div class="pagination p1" th:fragment="pagination" id="pagination" th:if="${totalPages>1}" th:with="baseUrl=${baseUrl}" style="display: flex; justify-content: center; margin-top: 20px">
   <ul>
-    <c:set var="baseUrl" value="@{'/guest/'+{#httpServletRequest.requestURI}+'?'}" />
     <a th:if = "${currentPage == 0 ? 'disabled' : ''}" th:href="@{${baseUrl}(page=${currentPage - 1},recordsPerPage=${recordsPerPage}, sort=${sort}, dir=${dir})}">
       <li><</li>
     </a>
