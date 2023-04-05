@@ -68,7 +68,6 @@ public class BasicGuestController {
         System.out.println("Total sum: " + total);
         return CART_PAGE;
     }
-
     @PostMapping ("/changeAmount")
     public String changeQty(@RequestParam("quantity") int qty, @RequestParam(ID) Long itemId, HttpServletRequest request) {
         System.out.println("quantity to be: "+qty);

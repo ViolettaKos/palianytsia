@@ -12,4 +12,5 @@ public interface ShoppingCartService {
     Map<Item, Integer> getProductsInCart();
     BigDecimal getTotal();
     Integer getQty();
+    void clearCart();
 }

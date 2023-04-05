@@ -25,4 +25,12 @@ public class LocationDTO {
     @NotBlank
     @NotNull
     private long id;
+
+    @Override
+    public String toString() {
+        return street + " " +
+                house + " №" +
+                apartment +
+                ", " +city;
+    }
 }

@@ -6,4 +6,5 @@ public interface LocationService {
     void editAddress(LocationDTO locationDTO);
     void deleteAddress(LocationDTO locationDTO);
     void addAddress(String email, LocationDTO locationDTO);
+    LocationDTO findById(Long id);
 }

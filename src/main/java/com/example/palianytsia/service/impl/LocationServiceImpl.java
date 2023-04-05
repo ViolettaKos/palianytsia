@@ -7,6 +7,7 @@ import com.example.palianytsia.model.User;
 import com.example.palianytsia.repository.LocationRepository;
 import com.example.palianytsia.repository.UserRepository;
 import com.example.palianytsia.service.LocationService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,10 @@ public class LocationServiceImpl implements LocationService {
         location.setUser(user);
 
         locationRepository.save(location);
+    }
+
+    @Override
+    public LocationDTO findById(Long id) {
+        return Mapper.toLocationDTO(locationRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }

@@ -13,7 +13,11 @@ public interface PageConstants {
     String REDIRECT_SIGNIN="redirect:/guest/signIn";
     String REDIRECT_CART="redirect:/guest/getCart";
     String REDIRECT_PROFILE="redirect:/user/profile";
+    String REDIRECT_ORDERS="redirect:/user/orderHistory";
+
 
 
     String PROFILE_PAGE="user/profile";
+    String CHECKOUT_PAGE="user/checkoutPage";
+    String ORDERS_PAGE="user/orderHistory";
 }

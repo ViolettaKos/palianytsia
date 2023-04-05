@@ -1,10 +1,13 @@
 package com.example.palianytsia.service.impl;
 
 import com.example.palianytsia.dto.Mapper;
+import com.example.palianytsia.dto.OrderDTO;
 import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
+import com.example.palianytsia.model.Order;
 import com.example.palianytsia.model.User;
+import com.example.palianytsia.repository.OrderRepository;
 import com.example.palianytsia.repository.RoleRepository;
 import com.example.palianytsia.repository.UserRepository;
 import com.example.palianytsia.service.UserService;
@@ -13,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.example.palianytsia.dto.Mapper.toUserDTO;
 
 @Slf4j
@@ -20,15 +27,15 @@ import static com.example.palianytsia.dto.Mapper.toUserDTO;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final OrderRepository orderRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository, PasswordEncoder passwordEncoder) {
         super();
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
-        this.roleRepository=roleRepository;
+        this.orderRepository=orderRepository;
     }
 
     @Override
@@ -73,5 +80,12 @@ public class UserServiceImpl implements UserService{
         User user=userRepository.findByEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getNewPass()));
         userRepository.save(user);
+    }
+
+    @Override
+    public List<OrderDTO> findOrders(String email) {
+        User user=userRepository.findByEmail(email);
+        List<Order> orders=orderRepository.findByUserOrderByDateCreated(user);
+        return orders.stream().map(Mapper::toOrderDTO).collect(Collectors.toList());
     }
 }

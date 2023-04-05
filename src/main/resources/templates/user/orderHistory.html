@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My orders</title>
+    <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header th:insert="~{guest/head.html :: header}"></header>
+<div class="section-header" style="padding-top: 100px">
+    <p>Your <span>Orders</span></p>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.more-info').click(function() {
+            $(this).parent().next('.item-info').slideToggle();
+            return false;
+        });
+    });
+</script>
+
+<div class="container">
+    <div th:each="order: ${orders}" style="background-color: #eee; padding: 20px; font-family: Nunito, sans-serif; margin-bottom: 50px">
+        <p th:text="#{order}+' №'+${order.trackingNumber}" style="font-weight: bold; display: inline-block">
+        <p th:text="${#temporals.format(order.dateCreated, 'dd.MM.yyyy HH:mm')}" style="display: inline-block; float: right"></p>
+        </p>
+        <p th:text="${order.orderStatus.toString()}" style="float: right; text-decoration: underline; font-style: italic; color: #ce1212"></p>
+        <p th:text="#{deliveryAddress}+': '+${order.deliveryAddress}"></p>
+        <p th:text="#{totalPrice}+': $'+${order.totalPrice}"></p>
+        <div style="text-align: center">
+            <a href="#" class="more-info"><span th:text="#{moreInfo}"/> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+        </div>
+        <div class="item-info" style="display: none">
+            <h5>Items in order:</h5>
+            <div th:each="entry : ${order.items.entrySet()}" style="margin-top: 20px">
+                <div style="display: table;">
+                    <div style="display: table-cell; vertical-align: middle;">
+                        <img th:src="@{${entry.getKey().getImgURL()}}" class="menu-img img-fluid" style="width: 100px; height: auto; vertical-align: middle;">
+                    </div>
+                    <div style="display: table-cell; vertical-align: middle; padding-left: 20px;">
+                        <h5 th:text="${entry.getKey().name}" class="align-middle" style="display: inline-block; font-size: 16px"></h5>
+                        <p class="price align-middle" th:text="'QTY: '+${entry.getValue()}" style="margin-bottom: 0;"></p>
+                        <p class="price align-middle" th:text="${entry.getValue()}+'×'+ ${entry.getKey().price}+'= $'+${entry.getKey().price.multiply(entry.getValue())}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

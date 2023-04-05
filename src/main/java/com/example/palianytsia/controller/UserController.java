@@ -1,12 +1,18 @@
 package com.example.palianytsia.controller;
 
 import com.example.palianytsia.dto.LocationDTO;
+import com.example.palianytsia.dto.OrderDTO;
 import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
 import com.example.palianytsia.model.City;
+import com.example.palianytsia.model.OrderStatus;
 import com.example.palianytsia.service.LocationService;
+import com.example.palianytsia.service.OrderService;
+import com.example.palianytsia.service.ShoppingCartService;
 import com.example.palianytsia.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +21,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.security.Principal;
+import java.util.UUID;
 
 import static com.example.palianytsia.controller.Constants.*;
-import static com.example.palianytsia.controller.PageConstants.PROFILE_PAGE;
-import static com.example.palianytsia.controller.PageConstants.REDIRECT_PROFILE;
+import static com.example.palianytsia.controller.PageConstants.*;
 import static org.springframework.util.StringUtils.hasLength;
 
 @Controller
@@ -38,6 +41,10 @@ public class UserController {
     UserService userService;
     @Autowired
     LocationService locationService;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+    @Autowired
+    private OrderService orderService;
 
 
     @GetMapping("/profile")
@@ -105,5 +112,54 @@ public class UserController {
         userService.updatePassword(userDTO);
         redirectAttributes.addFlashAttribute(SUCCESS, WARN_PASS);
         return REDIRECT_PROFILE;
+    }
+
+    @GetMapping("/checkoutPage")
+    public String checkout(Model model, Principal principal) {
+        UserDTO user = userService.findByEmail(principal.getName());
+        model.addAttribute(USER, user);
+        model.addAttribute(CITY, City.values());
+        return CHECKOUT_PAGE;
+    }
+
+    @PostMapping("/makeOrder")
+    public String makeOrder(Principal principal, HttpSession session,
+                            @RequestParam(LOCATION) String location,
+                            @RequestParam(value = CITY, required = false) String city,
+                            @RequestParam(value = STREET, required = false) String street,
+                            @RequestParam(value = HOUSE, required = false) String house,
+                            @RequestParam(value = APARTMENT, required = false) String apartment) {
+        String deliveryAddress;
+        if(location.equals(OTHER)) {
+            deliveryAddress=street+" "+house+" №"+apartment+", "+city;
+        } else {
+            LocationDTO locationDTO=locationService.findById(Long.valueOf(location));
+            deliveryAddress=locationDTO.toString();
+        }
+        UserDTO userDTO=userService.findByEmail(principal.getName());
+        buildOrder(deliveryAddress, userDTO);
+        shoppingCartService.clearCart();
+        session.setAttribute(CART_COUNT, 0);
+        return REDIRECT_ORDERS;
+    }
+
+    @GetMapping("/orderHistory")
+    public String showOrderHistory(Principal principal, Model model){
+        UserDTO user = userService.findByEmail(principal.getName());
+        model.addAttribute(USER, user);
+        model.addAttribute(ORDERS, userService.findOrders(principal.getName()));
+        return ORDERS_PAGE;
+    }
+
+
+    private void buildOrder(String deliveryAddress, UserDTO userDTO) {
+        OrderDTO orderDTO=new OrderDTO()
+                .setOrderStatus(OrderStatus.IN_PROGRESS)
+                .setTrackingNumber(UUID.randomUUID().toString())
+                .setItems(shoppingCartService.getProductsInCart())
+                .setTotalPrice(shoppingCartService.getTotal())
+                .setDeliveryAddress(deliveryAddress)
+                .setUserDTO(userDTO);
+        orderService.putOrder(orderDTO);
     }
 }

@@ -55,9 +55,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void changeQty(Item item, int qty) {
         items.replace(item, qty);
-//        if (items.containsKey(item)) {
-//            items.put(item, qty);
-//        }
     }
 
     @Override
@@ -77,5 +74,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public Integer getQty() {
         return items.entrySet().stream()
                 .map(Map.Entry::getValue).reduce(Integer::sum).orElse(0);
+    }
+
+    @Override
+    public void clearCart() {
+        items.clear();
     }
 }

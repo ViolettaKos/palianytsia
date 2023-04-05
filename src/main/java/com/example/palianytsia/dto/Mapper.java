@@ -1,6 +1,7 @@
 package com.example.palianytsia.dto;
 
 import com.example.palianytsia.model.Location;
+import com.example.palianytsia.model.Order;
 import com.example.palianytsia.model.Role;
 import com.example.palianytsia.model.User;
 import org.modelmapper.ModelMapper;
@@ -38,15 +39,6 @@ public class Mapper {
                     .map(location, Location.class)).collect(Collectors.toSet())));
         }
         return user;
-//        return new User()
-//                .setFirstName(userDTO.getFirstName())
-//                .setLastName(userDTO.getLastName())
-//                .setEmail(userDTO.getEmail())
-//                .setMobileNumber(userDTO.getMobileNumber())
-//                .setRoles(new HashSet<>(userDTO.getRoles().stream().map(role -> new ModelMapper()
-//                        .map(role, Role.class)).collect(Collectors.toSet())))
-//                .setLocations(new HashSet<>(userDTO.getLocations().stream().map(location -> new ModelMapper()
-//                        .map(location, Location.class)).collect(Collectors.toSet())));
     }
 
     public static LocationDTO toLocationDTO(Location location) {
@@ -64,6 +56,26 @@ public class Mapper {
                 .setStreet(locationDTO.getStreet())
                 .setHouse(locationDTO.getHouse())
                 .setApartment(locationDTO.getApartment());
+    }
+
+    public static Order toOrder(OrderDTO orderDTO) {
+        return new Order()
+                .setTrackingNumber(orderDTO.getTrackingNumber())
+                .setStatus(orderDTO.getOrderStatus())
+                .setDeliveryAddress(orderDTO.getDeliveryAddress())
+                .setItems(orderDTO.getItems())
+                .setTotalPrice(orderDTO.getTotalPrice());
+
+    }
+
+    public static OrderDTO toOrderDTO(Order order) {
+        return new OrderDTO()
+                .setDateCreated(order.getDateCreated())
+                .setOrderStatus(order.getStatus())
+                .setTotalPrice(order.getTotalPrice())
+                .setTrackingNumber(order.getTrackingNumber())
+                .setDeliveryAddress(order.getDeliveryAddress())
+                .setItems(order.getItems());
     }
 
 }

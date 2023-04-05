@@ -6,10 +6,16 @@ public interface Constants {
     String EMPTY="empty";
     String USER="user";
     String CITY="city";
+    String STREET="street";
+    String HOUSE="house";
+    String APARTMENT="apartment";
+    String OTHER="other";
     String LANG="lang";
     String ITEM="item";
     String ITEMS="items";
+    String ORDERS="orders";
     String TOTAL="total";
+    String LOCATION="location";
     String CART_COUNT="cartCount";
     String CURR_PAGE="currentPage";
     String TOTAL_PAGES="totalPages";

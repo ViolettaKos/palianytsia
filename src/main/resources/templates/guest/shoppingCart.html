@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{shoppingCart}"></title>
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
 </head>
 <style>
+    .box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        position: absolute;
+        top: 730px;
+        right: 0;
+        height: 40%;
+        padding: 100px;
+
+    }
+
+    .box a {
+        margin-bottom: 10px;
+        margin-right: 0px;
+    }
+
+    .box p {
+        margin: 0;
+    }
     .select-qty {
         font-size: 14px;
         color: #1a1a1a;
@@ -29,6 +51,10 @@
         border-radius: 60px;
         transition: 0.3s;
         vertical-align: middle;
+    }
+    .btn-add-to-cart.disabled {
+       background: #dfc2c4;
+        pointer-events: none;
     }
     /* The popup form - hidden by default */
     .form-popup {
@@ -92,7 +118,7 @@
 <header th:insert="~{guest/head.html :: header}"></header>
 
 <div class="section-header" style="padding-top: 100px">
-    <p th:text="#{shopping}"> <span th:text="#{cart}"/></p>
+    <p>Shopping <span>Cart</span></p>
 </div>
 <div style="margin-top: 20px; margin-left: 100px;" th:if="${session.cartCount ne 0}">
     <div class="col-lg-4 menu-item" th:each="item: ${items}" style="margin-top: 40px">
@@ -124,7 +150,13 @@
     <h3 style="display: inline-block;" th:text="#{total}+':'"/>
     <h5 th:text="'$'+${total}" style="float: right; display: inline-block; margin-right: 100px"/>
     </div>
-    <a class="btn-add-to-cart" href="" style="float: right; margin-top: 20px; margin-right: 100px" th:text="#{proceed}"/>
+    <div sec:authorize="hasAuthority('USER')">
+    <a class="btn-add-to-cart" th:href="@{/user/checkoutPage}" style="float: right; margin-top: 20px; margin-right: 100px" th:text="#{proceed}"/>
+    </div>
+    <div class="box" sec:authorize="!isAuthenticated()">
+        <a class="btn-add-to-cart disabled" disabled="disabled"  th:text="#{proceed}"/>
+        <p style="font-size: 18px; font-weight: 300; line-height: 24px;">You must <a style="font-size: 18px; text-decoration: underline; color: red; letter-spacing: 1px;" href="signIn.html">sign in</a> to make orders! </p>
+    </div>
 </div>
 <div th:if="${session.cartCount eq 0}" class="section-header" style="display: flex; align-items: center; justify-content: center; height: 50vh;">
     <h4 style="font-family: Nunito,cursive; font-weight: 400; font-size: 24px; margin: 0;" th:text="#{noItems}"/>
