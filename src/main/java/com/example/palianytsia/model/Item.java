@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,6 +35,5 @@ public class Item {
 
     @Column(name = "imgurl",nullable = false)
     private String imgURL;
-
 
 }

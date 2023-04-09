@@ -22,14 +22,7 @@ import java.util.Map;
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    private final ItemRepository itemRepository;
     private Map<Item, Integer> items=new HashMap<>();
-
-    @Autowired
-    public ShoppingCartServiceImpl(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
-
 
     @Override
     public void addItem(Item item, int quantity) {

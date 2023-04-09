@@ -1,13 +1,10 @@
 package com.example.palianytsia.dto;
 
-import com.example.palianytsia.model.Location;
-import com.example.palianytsia.model.Order;
-import com.example.palianytsia.model.Role;
-import com.example.palianytsia.model.User;
+import com.example.palianytsia.model.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -63,19 +60,21 @@ public class Mapper {
                 .setTrackingNumber(orderDTO.getTrackingNumber())
                 .setStatus(orderDTO.getOrderStatus())
                 .setDeliveryAddress(orderDTO.getDeliveryAddress())
-                .setItems(orderDTO.getItems())
                 .setTotalPrice(orderDTO.getTotalPrice());
 
     }
 
     public static OrderDTO toOrderDTO(Order order) {
+        List<OrderItems> orderItemsList = order.getOrder_items();
+        Map<Item, Integer> items = orderItemsList.stream()
+                .collect(Collectors.toMap(OrderItems::getItem, OrderItems::getQuantity));
         return new OrderDTO()
                 .setDateCreated(order.getDateCreated())
                 .setOrderStatus(order.getStatus())
                 .setTotalPrice(order.getTotalPrice())
                 .setTrackingNumber(order.getTrackingNumber())
                 .setDeliveryAddress(order.getDeliveryAddress())
-                .setItems(order.getItems());
+                .setItems(items);
     }
 
 }

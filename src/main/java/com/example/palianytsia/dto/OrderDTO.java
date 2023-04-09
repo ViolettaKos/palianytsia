@@ -24,7 +24,7 @@ public class OrderDTO {
     private String deliveryAddress;
     @CreationTimestamp
     private LocalDateTime dateCreated;
-//    private Map<Item, Integer> items;
-    List<OrderItemDTO> itemDTOS;
+    private Map<Item, Integer> items;
+//    List<OrderItemDTO> itemDTOS;
     private UserDTO userDTO;
 }

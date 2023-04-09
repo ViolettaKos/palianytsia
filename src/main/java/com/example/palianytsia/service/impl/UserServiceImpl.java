@@ -7,6 +7,7 @@ import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
 import com.example.palianytsia.model.Order;
 import com.example.palianytsia.model.User;
+import com.example.palianytsia.repository.ItemRepository;
 import com.example.palianytsia.repository.OrderRepository;
 import com.example.palianytsia.repository.RoleRepository;
 import com.example.palianytsia.repository.UserRepository;
@@ -28,14 +29,17 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final ItemRepository itemRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository,
+                           ItemRepository itemRepository, PasswordEncoder passwordEncoder) {
         super();
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
         this.orderRepository=orderRepository;
+        this.itemRepository=itemRepository;
     }
 
     @Override

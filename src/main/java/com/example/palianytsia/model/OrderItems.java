@@ -14,16 +14,18 @@ import java.util.Map;
 @Table(name = "order_items")
 public class OrderItems {
 
-
     @EmbeddedId
     private OrderItemId id;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("itemId")
+    @MapsId("item_id")
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @Column(nullable = false)
