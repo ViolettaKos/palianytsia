@@ -31,6 +31,6 @@ public class LocationDTO {
         return street + " " +
                 house + " №" +
                 apartment +
-                ", " +city;
+                ", " + city;
     }
 }

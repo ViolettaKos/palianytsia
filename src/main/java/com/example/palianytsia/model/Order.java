@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -40,11 +39,6 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime dateCreated;
 
-//    @ElementCollection
-//    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
-//    @MapKeyJoinColumn(name = "item_id")
-//    @Column(name = "quantity")
-//    private Map<Item, Integer> items;
     @OneToMany(mappedBy = "order")
     private List<OrderItems> order_items;
 

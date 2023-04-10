@@ -5,11 +5,6 @@
     <title th:text="#{profile}"></title>
     <th:block th:insert="~{guest/head.html :: headerfiles}"></th:block>
     <link th:href="@{/assets/css/styleProfile.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/simple-datatables/style.css}" rel="stylesheet">
-    <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
     <style>
         .btn-profile {
             margin-top: 20px;
@@ -20,11 +15,13 @@
             transition: 0.3s;
             border: var(--color-primary);
         }
+
         .btn-profile:hover {
             color: #fff;
             background: rgba(206, 18, 18, 0.8);
         }
-        .btn-profile:disabled{
+
+        .btn-profile:disabled {
             background: mistyrose;
         }
 
@@ -97,8 +94,10 @@
         <h1 th:text="#{profile}"/>
     </div><!-- End Page Title -->
 
-    <div style="width: 50%; margin-left: 100px; margin-bottom: 30px;" class="alert alert-danger" role="alert" th:text="#{${message}}" th:if="${message ne null and message ne ''}"></div>
-    <div style="width: 50%; margin-left: 100px; margin-bottom: 30px;" class="alert alert-success" role="alert" th:text="#{${successMessage}}" th:if="${successMessage ne null and successMessage ne ''}"></div>
+    <div style="width: 50%; margin-left: 100px; margin-bottom: 30px;" class="alert alert-danger" role="alert"
+         th:text="#{${message}}" th:if="${message ne null and message ne ''}"></div>
+    <div style="width: 50%; margin-left: 100px; margin-bottom: 30px;" class="alert alert-success" role="alert"
+         th:text="#{${successMessage}}" th:if="${successMessage ne null and successMessage ne ''}"></div>
 
     <div class="col-xl-8" style="margin-left: 100px">
 
@@ -108,23 +107,28 @@
                 <ul class="nav nav-tabs nav-tabs-bordered">
 
                     <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" th:text="#{overview}"/>
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview"
+                                th:text="#{overview}"/>
                     </li>
 
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-addresses" th:text="#{addresses}"/>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-addresses"
+                                th:text="#{addresses}"/>
                     </li>
 
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" th:text="#{editProfile}"/>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit"
+                                th:text="#{editProfile}"/>
                     </li>
 
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings" th:text="#{settings}"/>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings"
+                                th:text="#{settings}"/>
                     </li>
 
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" th:text="#{changePass}"/>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password"
+                                th:text="#{changePass}"/>
                     </li>
 
                 </ul>
@@ -159,19 +163,25 @@
                                 <li th:each="location : ${user.locations}">
                                     <span th:text="${location.id}"></span>
                                     <span th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></span>
-                                    <a onclick="openEditDeleteForm('editForm', this)" th:data-street="${location.street}" th:data-city="${location.city}" th:data-house="${location.house}" th:data-apartment="${location.apartment}" th:data-id="${location.id}" style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00" th:text="#{edit}"/>
-                                    <a onclick="openEditDeleteForm('deleteForm', this)" th:data-id="${location.id}" style="color: red; text-decoration: underline" th:text="#{delete}"/>
+                                    <a onclick="openEditDeleteForm('editForm', this)"
+                                       th:data-street="${location.street}" th:data-city="${location.city}"
+                                       th:data-house="${location.house}" th:data-apartment="${location.apartment}"
+                                       th:data-id="${location.id}"
+                                       style="margin-left: 30px; padding-right: 10px; text-decoration: underline; color: #008a00"
+                                       th:text="#{edit}"/>
+                                    <a onclick="openEditDeleteForm('deleteForm', this)" th:data-id="${location.id}"
+                                       style="color: red; text-decoration: underline" th:text="#{delete}"/>
                                 </li>
                             </div>
                             <div class="col-lg-9 col-md-8" th:if="${user.locations.isEmpty()}"
-                                                         th:text="#{noAddress}"/>
+                                 th:text="#{noAddress}"/>
                         </div>
                         <div class="text-center" th:if="${user.locations.size()==5}">
                             <button type="submit" class="btn-profile" disabled th:text="#{addAddress}"/>
                             <p style="margin-top: 10px; font-style: italic; color: #a52834" th:text="#{limitAddress}"/>
                         </div>
                         <div class="text-center" th:if="${user.locations.size()<5}">
-                            <button type="submit" class="btn-profile" onclick="openForm()"  th:text="#{addAddress}"/>
+                            <button type="submit" class="btn-profile" onclick="openForm()" th:text="#{addAddress}"/>
                         </div>
                     </div>
 
@@ -182,35 +192,41 @@
                         <form th:action="@{/user/editProfile}" method="post" th:object="${user}">
 
                             <div class="row mb-3">
-                                <label for="firstName" class="col-md-4 col-lg-3 col-form-label" th:text="#{first.name}"/>
+                                <label for="firstName" class="col-md-4 col-lg-3 col-form-label"
+                                       th:text="#{first.name}"/>
                                 <div class="col-md-8 col-lg-9">
-                                    <input name="firstName" type="text" class="form-control" id="firstName" th:field="*{firstName}" required >
+                                    <input name="firstName" type="text" class="form-control" id="firstName"
+                                           th:field="*{firstName}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="lastName" class="col-md-4 col-lg-3 col-form-label" th:text="#{last.name}"/>
                                 <div class="col-md-8 col-lg-9">
-                                    <input name="lastName" type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+                                    <input name="lastName" type="text" class="form-control" id="lastName"
+                                           th:field="*{lastName}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="mobileNumber" class="col-md-4 col-lg-3 col-form-label" th:text="#{telephone.num}"/>
+                                <label for="mobileNumber" class="col-md-4 col-lg-3 col-form-label"
+                                       th:text="#{telephone.num}"/>
                                 <div class="col-md-8 col-lg-9">
-                                    <input name="mobileNumber" type="text" class="form-control" id="mobileNumber" th:field="*{mobileNumber}" required>
+                                    <input name="mobileNumber" type="text" class="form-control" id="mobileNumber"
+                                           th:field="*{mobileNumber}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="email" class="col-md-4 col-lg-3 col-form-label" th:text="#{email}"/>
                                 <div class="col-md-8 col-lg-9">
-                                    <input name="email" type="email" class="form-control" id="email" th:field="*{email}" required>
+                                    <input name="email" type="email" class="form-control" id="email" th:field="*{email}"
+                                           required>
                                 </div>
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn-profile"  th:text="#{saveChanges}"/>
+                                <button type="submit" class="btn-profile" th:text="#{saveChanges}"/>
                             </div>
                         </form><!-- End Profile Edit Form -->
 
@@ -253,14 +269,17 @@
                             <div class="row mb-3">
                                 <label for="newPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{newPass}"/>
                                 <div class="col-md-8 col-lg-9">
-                                    <input th:field="*{newPass}" type="password" class="form-control" id="newPassword" required>
+                                    <input th:field="*{newPass}" type="password" class="form-control" id="newPassword"
+                                           required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="confirmPassword" class="col-md-4 col-lg-3 col-form-label" th:text="#{confirmNewPass}"></label>
+                                <label for="confirmPassword" class="col-md-4 col-lg-3 col-form-label"
+                                       th:text="#{confirmNewPass}"></label>
                                 <div class="col-md-8 col-lg-9">
-                                    <input th:field="*{confirmPass}" type="password" class="form-control" id="confirmPassword" required>
+                                    <input th:field="*{confirmPass}" type="password" class="form-control"
+                                           id="confirmPassword" required>
                                 </div>
                             </div>
 
@@ -323,7 +342,7 @@
         <label><b th:text="#{apartment}"/></label>
         <input type="text" id="apartment-input" name="apartment" required>
 
-        <input type="hidden" id="id" name="id" value="" />
+        <input type="hidden" id="id" name="id" value=""/>
         <button type="submit" class="btn" th:text="#{saveChanges}"/>
         <button type="button" class="btn cancel" onclick="closeTheForm('editForm')" th:text="#{close}"/>
     </form>
@@ -333,7 +352,7 @@
         <h2 class="form-header" th:text="#{deleteAddress}"/>
         <p th:text="#{warnDelete}"/>
 
-        <input type="hidden" id="locationId-input" name="id" value="" />
+        <input type="hidden" id="locationId-input" name="id" value=""/>
         <button type="submit" id="delete-btn" class="btn" th:text="#{delete}"/>
         <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')" th:text="#{close}"/>
     </form>
@@ -342,7 +361,7 @@
 
 <script>
     function openForm() {
-        document.getElementById('popupForm').style.display="block";
+        document.getElementById('popupForm').style.display = "block";
     }
 
 
@@ -351,26 +370,17 @@
     }
 
     function openEditDeleteForm(formName, location) {
-        document.getElementById(formName).style.display="block";
+        document.getElementById(formName).style.display = "block";
 
         document.getElementById("city-input").value = location.dataset.city;
         document.getElementById("street-input").value = location.dataset.street;
         document.getElementById("house-input").value = location.dataset.house;
         document.getElementById("apartment-input").value = location.dataset.apartment;
-        document.getElementById("id").value =location.dataset.id;
+        document.getElementById("id").value = location.dataset.id;
         document.getElementById("locationId-input").value = location.dataset.id;
-        console.log("id: "+location.dataset.id);
+        console.log("id: " + location.dataset.id);
     }
 </script>
-
-<!-- Vendor JS Files -->
-<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
-<script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
-<script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
-<script th:src="@{/assets/vendor/quill/quill.min.js}"></script>
-<script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
-<script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
-
 
 <!-- Template Main JS File -->
 <script th:src="@{/assets/js/mainProfile.js}"></script>

@@ -20,7 +20,7 @@ public class Location {
     private User user;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id", unique = true, nullable = false)
     private long id;
 

@@ -1,193 +1,219 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <style th:fragment="sorter-style" id="sorter-style">
-  button {
-    font-weight: 900;
-    color: black !important;
-  }
+    button {
+        font-weight: 900;
+        color: black !important;
+    }
 
-  .containerSorter {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  .container__title {
-    width: 100%;
-    color: #fff;
-    margin-bottom: 25px;
-    font-weight: 400;
-    text-align: center;
-  }
+    .containerSorter {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+    }
 
-  .select-dropdown {
-    position: relative;
-    display: inline-block;
-    max-width: 100%;
-  }
-  .select-dropdown__button {
-    padding: 10px 35px 10px 15px;
-    background-color: #fff;
-    color: #616161;
-    border: 1px solid #cecece;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 210px;
-    text-align: left;
-  }
-  .select-dropdown__button:focus {
-    outline: none;
-  }
-  .select-dropdown__button .zmdi-chevron-down {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-  }
-  .select-dropdown__list {
-    position: absolute;
-    display: block;
-    left: 0;
-    right: 0;
-    max-height: 300px;
-    overflow: auto;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    opacity: 0;
-    pointer-events: none;
-    transform-origin: top left;
-    transform: scale(1, 0);
-    transition: all ease-in-out 0.3s;
-    z-index: 2;
-  }
-  .select-dropdown__list.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1, 1);
-    display: block;
-  }
-  .select-dropdown__list-item {
-    display: block;
-    list-style-type: none;
-    padding: 10px 15px;
-    background: #fff;
-    border-top: 1px solid #e6e6e6;
-    font-size: 14px;
-    line-height: 1.4;
-    cursor: pointer;
-    color: #616161;
-    transition: all ease-in-out 0.3s;
-  }
-  .select-dropdown__list-item:hover {
-    background-color: var(--color-primary);
-    color: #fff;
-    transition: all ease-in-out 0.3s;
-  }
+    .select-dropdown {
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+    }
+
+    .select-dropdown__button {
+        padding: 10px 35px 10px 15px;
+        background-color: #fff;
+        color: #616161;
+        border: 1px solid #cecece;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 210px;
+        text-align: left;
+    }
+
+    .select-dropdown__button:focus {
+        outline: none;
+    }
+
+    .select-dropdown__button .zmdi-chevron-down {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+    }
+
+    .select-dropdown__list {
+        position: absolute;
+        display: block;
+        left: 0;
+        right: 0;
+        max-height: 300px;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        opacity: 0;
+        pointer-events: none;
+        transform-origin: top left;
+        transform: scale(1, 0);
+        transition: all ease-in-out 0.3s;
+        z-index: 2;
+    }
+
+    .select-dropdown__list.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1, 1);
+        display: block;
+    }
+
+    .select-dropdown__list-item {
+        display: block;
+        list-style-type: none;
+        padding: 10px 15px;
+        background: #fff;
+        border-top: 1px solid #e6e6e6;
+        font-size: 14px;
+        line-height: 1.4;
+        cursor: pointer;
+        color: #616161;
+        transition: all ease-in-out 0.3s;
+    }
+
+    .select-dropdown__list-item:hover {
+        background-color: var(--color-primary);
+        color: #fff;
+        transition: all ease-in-out 0.3s;
+    }
 </style>
 <style th:fragment="sorter-type-style" id="sorter-type-style">
-  .new {
-    padding: 30px;
-  }
+    .new {
+        padding: 30px;
+    }
 
-  .form-group {
-    display: inline-block;
-    margin-right: 15px;
-  }
+    .form-group {
+        display: inline-block;
+        margin-right: 15px;
+    }
 
-  .form-group input {
-    padding: 0;
-    height: initial;
-    width: initial;
-    margin-bottom: 0;
-    display: none;
-    cursor: pointer;
-  }
+    .form-group input {
+        padding: 0;
+        height: initial;
+        width: initial;
+        margin-bottom: 0;
+        display: none;
+        cursor: pointer;
+    }
 
-  .form-group label {
-    position: relative;
-    cursor: pointer;
-  }
+    .form-group label {
+        position: relative;
+        cursor: pointer;
+    }
 
-  .form-group label:before {
-    content:'';
-    -webkit-appearance: none;
-    background-color: transparent;
-    border: 2px solid var(--color-primary);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-    padding: 10px;
-    display: inline-block;
-    position: relative;
-    vertical-align: middle;
-    cursor: pointer;
-    margin-right: 5px;
-  }
+    .form-group label:before {
+        content: '';
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: 2px solid var(--color-primary);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+        padding: 10px;
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+        cursor: pointer;
+        margin-right: 5px;
+    }
 
-  .form-group input:checked + label:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 2px;
-    left: 9px;
-    width: 6px;
-    height: 14px;
-    border: solid var(--color-primary);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
+    .form-group input:checked + label:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 2px;
+        left: 9px;
+        width: 6px;
+        height: 14px;
+        border: solid var(--color-primary);
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
 
 </style>
 
 <div class="containerSorter" th:fragment="sorter" id="sorter" th:with="baseUrl=${baseUrl}">
-  <div class="select-dropdown">
-    <button href="#" role="button" data-value="" class="select-dropdown__button"><span th:text="#{sortBy}"> </span> <i class="zmdi zmdi-chevron-down"></i>
-    </button>
-    <ul class="select-dropdown__list">
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''" class="select-dropdown__list-item" th:text="#{name}"/>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"  class="select-dropdown__list-item" th:text="#{lowestPrice}"/>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=desc\''"  class="select-dropdown__list-item" th:text="#{highestPrice}"/>
-    </ul>
-  </div>
+    <div class="select-dropdown">
+        <button href="#" role="button" data-value="" class="select-dropdown__button"><span th:text="#{sortBy}"> </span>
+            <i class="zmdi zmdi-chevron-down"></i>
+        </button>
+        <ul class="select-dropdown__list">
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=name\''"
+                class="select-dropdown__list-item" th:text="#{name}"/>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=asc\''"
+                class="select-dropdown__list-item" th:text="#{lowestPrice}"/>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=price&amp;dir=desc\''"
+                class="select-dropdown__list-item" th:text="#{highestPrice}"/>
+        </ul>
+    </div>
 </div>
 
 
 <div class="containerSorter" th:fragment="records" id="records" th:with="baseUrl=${baseUrl}">
-  <div class="select-dropdown">
-    <button href="#" role="button" data-value="" class="select-dropdown__button" id="rec"><span th:text="#{records}"> </span> <i class="zmdi zmdi-chevron-down"></i>
-    </button>
-    <ul class="select-dropdown__list">
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">6</li>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=9&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">9</li>
-      <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=12&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''" class="select-dropdown__list-item">12</li>
-    </ul>
-  </div>
+    <div class="select-dropdown">
+        <button href="#" role="button" data-value="" class="select-dropdown__button" id="rec"><span
+                th:text="#{records}"> </span> <i class="zmdi zmdi-chevron-down"></i>
+        </button>
+        <ul class="select-dropdown__list">
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=6&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''"
+                class="select-dropdown__list-item">6
+            </li>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=9&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''"
+                class="select-dropdown__list-item">9
+            </li>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage=12&amp;sort='+${sort}+'&amp;dir='+${dir}+'\''"
+                class="select-dropdown__list-item">12
+            </li>
+        </ul>
+    </div>
 </div>
 
 
 <div class="new" th:fragment="sorter-type" id="sorter-type">
-  <form>
-    <div class="form-group">
-      <input type="checkbox" id="cookie" value="COOKIE" class="type-checkbox">
-      <label for="cookie" th:text="#{cookies}"/>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="cakes"  value="CAKE" class="type-checkbox">
-      <label for="cakes" th:text="#{cakes}"/>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="cupcakes" value="CUPCAKE" class="type-checkbox">
-      <label for="cupcakes" th:text="#{cupcakes}"/>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="croissants" value="CROISSANT" class="type-checkbox">
-      <label for="croissants" th:text="#{croissants}"/>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="cheesecakes" value="CHEESECAKE" class="type-checkbox">
-      <label for="cheesecakes" th:text="#{cheesecakes}"/>
-    </div>
-  </form>
+    <form>
+        <div class="form-group">
+            <input type="checkbox" id="cookie" value="COOKIE" class="type-checkbox">
+            <label for="cookie" th:text="#{cookies}"/>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="cakes" value="CAKE" class="type-checkbox">
+            <label for="cakes" th:text="#{cakes}"/>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="cupcakes" value="CUPCAKE" class="type-checkbox">
+            <label for="cupcakes" th:text="#{cupcakes}"/>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="croissants" value="CROISSANT" class="type-checkbox">
+            <label for="croissants" th:text="#{croissants}"/>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="cheesecakes" value="CHEESECAKE" class="type-checkbox">
+            <label for="cheesecakes" th:text="#{cheesecakes}"/>
+        </div>
+    </form>
 </div>
 
+<div class="containerSorter" th:fragment="sorter" id="sort-orders" th:with="baseUrl=${baseUrl}">
+    <div class="select-dropdown">
+        <button href="#" role="button" data-value="" class="select-dropdown__button"><span th:text="#{sortBy}"> </span>
+            <i class="zmdi zmdi-chevron-down"></i>
+        </button>
+        <ul class="select-dropdown__list">
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=dateCreated\''"
+                class="select-dropdown__list-item" th:text="#{date}"/>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=totalPrice&amp;dir=asc\''"
+                class="select-dropdown__list-item" th:text="#{lowestPrice}"/>
+            <li th:attr="onclick='javascript:location.href=\'' + ${baseUrl} + '?page='+${currentPage}+'&amp;recordsPerPage='+${recordsPerPage}+'&amp;sort=totalPrice&amp;dir=desc\''"
+                class="select-dropdown__list-item" th:text="#{highestPrice}"/>
+        </ul>
+    </div>
+</div>
 
 </html>

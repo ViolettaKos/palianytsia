@@ -11,12 +11,13 @@ import com.example.palianytsia.service.LocationService;
 import com.example.palianytsia.service.OrderService;
 import com.example.palianytsia.service.ShoppingCartService;
 import com.example.palianytsia.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,8 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import java.security.Principal;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.example.palianytsia.controller.Constants.*;
@@ -45,6 +46,7 @@ public class UserController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private OrderService orderService;
+    private static final PaginationUtil paginationUtil = new PaginationUtil();
 
 
     @GetMapping("/profile")
@@ -130,13 +132,13 @@ public class UserController {
                             @RequestParam(value = HOUSE, required = false) String house,
                             @RequestParam(value = APARTMENT, required = false) String apartment) {
         String deliveryAddress;
-        if(location.equals(OTHER)) {
-            deliveryAddress=street+" "+house+" №"+apartment+", "+city;
+        if (location.equals(OTHER)) {
+            deliveryAddress = street + " " + house + " №" + apartment + ", " + city;
         } else {
-            LocationDTO locationDTO=locationService.findById(Long.valueOf(location));
-            deliveryAddress=locationDTO.toString();
+            LocationDTO locationDTO = locationService.findById(Long.valueOf(location));
+            deliveryAddress = locationDTO.toString();
         }
-        UserDTO userDTO=userService.findByEmail(principal.getName());
+        UserDTO userDTO = userService.findByEmail(principal.getName());
         buildOrder(deliveryAddress, userDTO);
         shoppingCartService.clearCart();
         session.setAttribute(CART_COUNT, 0);
@@ -144,16 +146,32 @@ public class UserController {
     }
 
     @GetMapping("/orderHistory")
-    public String showOrderHistory(Principal principal, Model model){
+    public String showOrderHistory(Principal principal, Model model,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "6") int recordsPerPage,
+                                   @RequestParam(defaultValue = ID) String sort,
+                                   @RequestParam(defaultValue = DESC) String dir) {
+
         UserDTO user = userService.findByEmail(principal.getName());
+
+        Sort sorting = Sort.by(sort);
+        if (dir.equals(ASC)) {
+            sorting = sorting.ascending();
+        } else {
+            sorting = sorting.descending();
+        }
+        Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
+        Page<OrderDTO> orderDTOPage = userService.displayAllOrders(principal.getName(), pageable);
+
         model.addAttribute(USER, user);
-        model.addAttribute(ORDERS, userService.findOrders(principal.getName()));
+        Map<String, Object> response = paginationUtil.paginationObj(orderDTOPage, dir);
+        model.addAllAttributes(response);
         return ORDERS_PAGE;
     }
 
 
     private void buildOrder(String deliveryAddress, UserDTO userDTO) {
-        OrderDTO orderDTO=new OrderDTO()
+        OrderDTO orderDTO = new OrderDTO()
                 .setOrderStatus(OrderStatus.IN_PROGRESS)
                 .setTrackingNumber(UUID.randomUUID().toString())
                 .setItems(shoppingCartService.getProductsInCart())

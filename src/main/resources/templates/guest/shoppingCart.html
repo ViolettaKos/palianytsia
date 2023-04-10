@@ -13,7 +13,7 @@
         align-items: flex-end;
         justify-content: center;
         position: absolute;
-        top: 730px;
+        top: 380px;
         right: 0;
         height: 40%;
         padding: 100px;
@@ -28,6 +28,7 @@
     .box p {
         margin: 0;
     }
+
     .select-qty {
         font-size: 14px;
         color: #1a1a1a;
@@ -35,11 +36,13 @@
         padding: 6px 3px;
         border-radius: 15px;
     }
+
     .btn-add-to-cart:hover,
     .btn-add-to-cart:focus:hover {
         color: #fff;
         background: rgba(206, 18, 18, 0.8);
     }
+
     .btn-add-to-cart,
     .btn-add-to-cart:focus {
         font-size: 18px;
@@ -52,10 +55,12 @@
         transition: 0.3s;
         vertical-align: middle;
     }
+
     .btn-add-to-cart.disabled {
-       background: #dfc2c4;
+        background: #dfc2c4;
         pointer-events: none;
     }
+
     /* The popup form - hidden by default */
     .form-popup {
         display: none;
@@ -124,44 +129,51 @@
     <div class="col-lg-4 menu-item" th:each="item: ${items}" style="margin-top: 40px">
         <div class="row align-items-center">
             <div class="col-md-4">
-            <img th:src="@{${item.getKey().getImgURL()}}" class="menu-img img-fluid" style="max-width:80%" >
+                <img th:src="@{${item.getKey().getImgURL()}}" class="menu-img img-fluid" style="max-width:80%">
             </div>
             <div class="col-md-8">
-            <h4 th:text="${item.getKey().name}" class="align-middle" style="display: inline-block;"></h4>
-                <a onclick="openDeleteForm(this)" th:data-id="${item.getKey().id}" style="text-decoration: underline; font-weight: bold; font-size: 14px; margin-left: 40px" th:text="#{remove}"/>
+                <h4 th:text="${item.getKey().name}" class="align-middle" style="display: inline-block;"></h4>
+                <a onclick="openDeleteForm(this)" th:data-id="${item.getKey().id}"
+                   style="text-decoration: underline; font-weight: bold; font-size: 14px; margin-left: 40px"
+                   th:text="#{remove}"/>
                 <p class="price align-middle" th:text="'QTY: '+${item.getValue()}" style="margin-bottom: 0;"/>
-                <p class="price align-middle" th:text="${item.getValue()}+'×'+ ${item.getKey().price}+'= $'+${item.getKey().price.multiply(item.getValue())}"/>
+                <p class="price align-middle"
+                   th:text="${item.getValue()}+'×'+ ${item.getKey().price}+'= $'+${item.getKey().price.multiply(item.getValue())}"/>
                 <form th:action="@{/guest/changeAmount}" method="post">
-                <select name="quantity" id="test" class="select-qty" onchange="submit()">
-                    <option th:value="${item.getValue()}" th:text="#{qty}+' '+${item.getValue()}" selected></option>
-                    <th:block th:each="i : ${#numbers.sequence(1,12)}">
-                        <option th:unless="${i == item.getValue()}" th:value="${i}" th:text="#{qty}+ ' ' + ${i}"></option>
-                    </th:block>
-                </select>
-                    <input type="hidden" th:value="${item.getKey().id}" name="id" />
+                    <select name="quantity" id="test" class="select-qty" onchange="submit()">
+                        <option th:value="${item.getValue()}" th:text="#{qty}+' '+${item.getValue()}" selected></option>
+                        <th:block th:each="i : ${#numbers.sequence(1,12)}">
+                            <option th:unless="${i == item.getValue()}" th:value="${i}"
+                                    th:text="#{qty}+ ' ' + ${i}"></option>
+                        </th:block>
+                    </select>
+                    <input type="hidden" th:value="${item.getKey().id}" name="id"/>
                     <button type="submit" style="display: none"></button>
                 </form>
             </div>
 
-    </div><!-- Menu Item -->
+        </div><!-- Menu Item -->
     </div>
     <hr style="margin-right: 100px"/>
     <div style="margin-top: 50px;">
-    <h3 style="display: inline-block;" th:text="#{total}+':'"/>
-    <h5 th:text="'$'+${total}" style="float: right; display: inline-block; margin-right: 100px"/>
+        <h3 style="display: inline-block;" th:text="#{total}+':'"/>
+        <h5 th:text="'$'+${total}" style="float: right; display: inline-block; margin-right: 100px"/>
     </div>
     <div sec:authorize="hasAuthority('USER')">
-    <a class="btn-add-to-cart" th:href="@{/user/checkoutPage}" style="float: right; margin-top: 20px; margin-right: 100px" th:text="#{proceed}"/>
+        <a class="btn-add-to-cart" th:href="@{/user/checkoutPage}"
+           style="float: right; margin-top: 20px; margin-right: 100px" th:text="#{proceed}"/>
     </div>
     <div class="box" sec:authorize="!isAuthenticated()">
-        <a class="btn-add-to-cart disabled" disabled="disabled"  th:text="#{proceed}"/>
-        <p style="font-size: 18px; font-weight: 300; line-height: 24px;">You must <a style="font-size: 18px; text-decoration: underline; color: red; letter-spacing: 1px;" href="signIn.html">sign in</a> to make orders! </p>
+        <a class="btn-add-to-cart disabled" disabled="disabled" th:text="#{proceed}"/>
+        <p style="font-size: 18px; font-weight: 300; line-height: 24px;">You must <a
+                style="font-size: 18px; text-decoration: underline; color: red; letter-spacing: 1px;"
+                href="signIn.html">sign in</a> to make orders! </p>
     </div>
 </div>
-<div th:if="${session.cartCount eq 0}" class="section-header" style="display: flex; align-items: center; justify-content: center; height: 50vh;">
+<div th:if="${session.cartCount eq 0}" class="section-header"
+     style="display: flex; align-items: center; justify-content: center; height: 50vh;">
     <h4 style="font-family: Nunito,cursive; font-weight: 400; font-size: 24px; margin: 0;" th:text="#{noItems}"/>
 </div>
-
 
 
 <div class="form-popup" id="deleteForm">
@@ -169,7 +181,7 @@
         <h2 class="form-header" th:text="#{deleteItem}"/>
         <p th:text="#{warnDelete}"/>
 
-        <input type="hidden" id="id" name="id" value="" />
+        <input type="hidden" id="id" name="id" value=""/>
         <button type="submit" id="delete-btn" class="btn" th:text="#{delete}"></button>
         <button type="button" class="btn cancel" onclick="closeTheForm('deleteForm')" th:text="#{close}"/>
     </form>
@@ -180,11 +192,12 @@
     function closeTheForm() {
         document.getElementById('deleteForm').style.display = "none";
     }
-    function openDeleteForm(item) {
-        document.getElementById('deleteForm').style.display="block";
 
-        document.getElementById("id").value =item.dataset.id;
-        console.log("id: "+item.dataset.id);
+    function openDeleteForm(item) {
+        document.getElementById('deleteForm').style.display = "block";
+
+        document.getElementById("id").value = item.dataset.id;
+        console.log("id: " + item.dataset.id);
     }
 
 </script>

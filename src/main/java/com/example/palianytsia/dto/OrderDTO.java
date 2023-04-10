@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -25,6 +24,5 @@ public class OrderDTO {
     @CreationTimestamp
     private LocalDateTime dateCreated;
     private Map<Item, Integer> items;
-//    List<OrderItemDTO> itemDTOS;
     private UserDTO userDTO;
 }

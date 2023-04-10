@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
                             OrderItemsRepository orderItemsRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
-        this.orderItemsRepository=orderItemsRepository;
+        this.orderItemsRepository = orderItemsRepository;
     }
 
     @Transactional
@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Mapper.toOrder(orderDTO);
         order.setUser(user);
 
-        long order_id=orderRepository.save(order).getId();
+        long order_id = orderRepository.save(order).getId();
         List<OrderItems> orderItems = getOrderItems(orderDTO, order, order_id);
         orderItemsRepository.saveAll(orderItems);
         order.setOrder_items(orderItems);
@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         Map<Item, Integer> cartItems = orderDTO.getItems();
 
         for (Map.Entry<Item, Integer> entry : cartItems.entrySet()) {
-            OrderItemId orderItemId=new OrderItemId();
+            OrderItemId orderItemId = new OrderItemId();
             orderItemId.setOrder_id(order_id);
             orderItemId.setItem_id(entry.getKey().getId());
 

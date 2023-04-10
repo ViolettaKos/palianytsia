@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class CustomUserDetails implements UserDetails {
     private User user;
 
     public CustomUserDetails(User user) {
-        this.user=user;
+        this.user = user;
     }
 
     @Override
@@ -27,14 +26,17 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getFullName() {
-        return this.user.getFirstName().charAt(0)+". "+user.getLastName();
+        return this.user.getFirstName().charAt(0) + ". " + user.getLastName();
     }
+
     public String getFirstName() {
         return this.user.getFirstName();
     }
+
     public String getTelephone() {
         return this.user.getMobileNumber();
     }
+
     public Set<Location> getLocations() {
         return this.user.getLocations();
     }

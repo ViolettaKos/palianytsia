@@ -26,75 +26,75 @@
     <p>Checkout <span>Page</span></p>
 </div>
 <div style="margin-top: 50px; padding-bottom: 50px" class="container">
-<div class="registration mx-auto d-block w-100">
-<form name="member-registration" th:action="@{/user/makeOrder}" method="post"
-      class="form-validate form-horizontal well">
-    <fieldset>
-        <div class="page-header text-center">
-            <h2 th:text="#{personalData}"/>
-        </div>
-        <div class="form-group">
-            <label th:text="#{first.name}">*</label>
-            <input type="text" class="form-control" required name="firstName"
-                   pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
-                   th:title="#{title.letters}"
-                   th:value="${user.firstName}"
-            />
-        </div>
-        <div class="form-group" style="margin-top: 20px">
-            <label th:text="#{telephone.num}">*</label>
-            <input type="text" class="form-control" required name="mobileNumber"
-                   pattern="^(?:\+38)?(?:[0-9] ?){9}[0-9]$"
-                   th:title="#{title.phone}"
-                   th:value="${user.mobileNumber}"
-                   />
-        </div>
+    <div class="registration mx-auto d-block w-100">
+        <form name="member-registration" th:action="@{/user/makeOrder}" method="post"
+              class="form-validate form-horizontal well">
+            <fieldset>
+                <div class="page-header text-center">
+                    <h2 th:text="#{personalData}"/>
+                </div>
+                <div class="form-group">
+                    <label th:text="#{first.name}">*</label>
+                    <input type="text" class="form-control" required name="firstName"
+                           pattern="^[A-Za-zА-ЩЬЮЯҐІЇЄа-щьюяґіїє'\- ]{1,30}"
+                           th:title="#{title.letters}"
+                           th:value="${user.firstName}"
+                    />
+                </div>
+                <div class="form-group" style="margin-top: 20px">
+                    <label th:text="#{telephone.num}">*</label>
+                    <input type="text" class="form-control" required name="mobileNumber"
+                           pattern="^(?:\+38)?(?:[0-9] ?){9}[0-9]$"
+                           th:title="#{title.phone}"
+                           th:value="${user.mobileNumber}"
+                    />
+                </div>
 
-        <div class="page-header text-center" style="margin-top: 50px">
-            <h2 th:text="#{yourAddress}"/>
-        </div>
+                <div class="page-header text-center" style="margin-top: 50px">
+                    <h2 th:text="#{yourAddress}"/>
+                </div>
 
-        <div class="form-group" style="margin-top: 20px">
-            <select name="location" class="modern-select" onchange="toggleNewAddress()">
-                <option th:each="location : ${user.locations}" th:value="${location.id}" th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-        <div id="newAddress" class="form-group" style="margin-top: 20px; display: none">
-            <p style="font-style: italic; text-decoration: underline">Please enter your delivery address: </p>
-        <div class="form-group" style="margin-top: 20px">
-            <label><b th:text="#{city}"/></label>
-            <select name="city" id="city-input" class="modern-select">
-                <option th:each="city : ${city}" th:text="${city}" ></option>
-            </select>
-        </div>
-            <div class="form-group" style="margin-top: 20px">
-                <label><b th:text="#{street}"/></label>
-                <input type="text" id="street-input" name="street" class="form-control">
-            </div>
-            <div class="form-group" style="margin-top: 20px">
-                <label><b th:text="#{house}"/></label>
-                <input type="text" id="house-input" name="house" class="form-control">
-            </div>
-            <div class="form-group" style="margin-top: 20px">
-                <label><b th:text="#{apartment}"/></label>
-                <input type="text" id="apartment-input" name="apartment" class="form-control">
-            </div>
-        </div>
+                <div class="form-group" style="margin-top: 20px">
+                    <select name="location" class="modern-select" onchange="toggleNewAddress()">
+                        <option th:each="location : ${user.locations}" th:value="${location.id}"
+                                th:text="${location.street}+' '+${location.house}+' №'+${location.apartment}+', '+${location.city}"></option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div id="newAddress" class="form-group" style="margin-top: 20px; display: none">
+                    <p style="font-style: italic; text-decoration: underline">Please enter your delivery address: </p>
+                    <div class="form-group" style="margin-top: 20px">
+                        <label><b th:text="#{city}"/></label>
+                        <select name="city" id="city-input" class="modern-select">
+                            <option th:each="city : ${city}" th:text="${city}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px">
+                        <label><b th:text="#{street}"/></label>
+                        <input type="text" id="street-input" name="street" class="form-control">
+                    </div>
+                    <div class="form-group" style="margin-top: 20px">
+                        <label><b th:text="#{house}"/></label>
+                        <input type="text" id="house-input" name="house" class="form-control">
+                    </div>
+                    <div class="form-group" style="margin-top: 20px">
+                        <label><b th:text="#{apartment}"/></label>
+                        <input type="text" id="apartment-input" name="apartment" class="form-control">
+                    </div>
+                </div>
 
-        <div class="d-flex justify-content-between align-items-center" style="margin-top: 50px">
-            <div class="form-group d-flex justify-content-start">
-                <button type="submit" class="submit" th:text="#{checkout}"/>
-            </div>
-            <div class="form-check form-group d-flex justify-content-end">
-                <a style="color: rgba(206, 18, 18, 0.8)" th:href="@{/guest/getCart}" th:text="#{returnToCart}"/>
-            </div>
-        </div>
-    </fieldset>
-</form>
+                <div class="d-flex justify-content-between align-items-center" style="margin-top: 50px">
+                    <div class="form-group d-flex justify-content-start">
+                        <button type="submit" class="submit" th:text="#{checkout}"/>
+                    </div>
+                    <div class="form-check form-group d-flex justify-content-end">
+                        <a style="color: rgba(206, 18, 18, 0.8)" th:href="@{/guest/getCart}" th:text="#{returnToCart}"/>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </div>
-</div>
-
 
 
 <script>

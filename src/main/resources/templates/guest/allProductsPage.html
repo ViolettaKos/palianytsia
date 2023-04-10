@@ -8,7 +8,7 @@
     <th:block th:insert="~{guest/sorter.html :: sorter-type-style}"></th:block>
 </head>
 <style>
-    .my-btn{
+    .my-btn {
         font-size: 14px;
         border-radius: 20px;
         transition: 0.3s;
@@ -32,11 +32,13 @@
     <div class="container" data-aos="fade-up">
 
         <div class="section-header" style="padding-top: 50px">
-            <p th:text="#{checkOur}"> <span th:text="#{deliciousBaking}"/></p>
+            <p th:text="#{checkOur}"><span th:text="#{deliciousBaking}"/></p>
         </div>
         <div style="text-align: center;">
-            <div th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
-            <div th:insert="~{guest/sorter.html :: records(baseUrl='/guest/allProducts')}" style="display: inline-block"></div>
+            <div th:insert="~{guest/sorter.html :: #sorter(baseUrl='/guest/allProducts')}"
+                 style="display: inline-block"></div>
+            <div th:insert="~{guest/sorter.html :: records(baseUrl='/guest/allProducts')}"
+                 style="display: inline-block"></div>
             <div th:insert="~{guest/sorter.html :: sorter-type}"></div>
         </div>
         <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
@@ -45,14 +47,14 @@
 
                 <div class="row gy-5">
 
-                    <div class="col-lg-4 menu-item" th:each="item: ${items}">
+                    <div class="col-lg-4 menu-item" th:each="item: ${content}">
                         <a th:href="@{/guest/productPage(id=${item.id})}">
-                        <img th:src="@{${item.getImgURL()}}" class="menu-img img-fluid">
-                        <h4 th:text="${item.name}"/>
+                            <img th:src="@{${item.getImgURL()}}" class="menu-img img-fluid">
+                            <h4 th:text="${item.name}"/>
                         </a>
                         <p class="price" th:text="'$' + ${item.price}"/>
                         <form th:action="@{/guest/addItem}" method="post" th:id="addForm">
-                            <input type="hidden" name="itemId" th:value="${item.id}" >
+                            <input type="hidden" name="itemId" th:value="${item.id}">
                             <select name="quantity" class="select-qty">
                                 <option value="1" selected th:text="#{qty}+':1'"></option>
                                 <th:block th:each="i : ${#numbers.sequence(2,12)}">
@@ -63,7 +65,6 @@
 
                         </form>
                     </div><!-- Menu Item -->
-
 
                 </div>
             </div><!-- End Starter Menu Content -->
@@ -76,35 +77,34 @@
 
 
 <script>
-    $('.select-dropdown__button').on('click', function(){
+    $('.select-dropdown__button').on('click', function () {
         $(this).next('.select-dropdown__list').toggleClass('active');
     });
 
-    $('.select-dropdown__list-item').on('click', function(){
+    $('.select-dropdown__list-item').on('click', function () {
         const itemValue = $(this).data('value');
-        console.log(itemValue);
         $(this).closest('.select-dropdown').find('.select-dropdown__button span').text($(this).text()).parent().attr('data-value', itemValue);
         $(this).closest('.select-dropdown__list').toggleClass('active');
     });
 </script>
 <script>
-    $(function() {
+    $(function () {
         // Get the current selected types from the URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const selectedTypes = urlParams.get('type') ? urlParams.get('type').split(',') : [];
 
         // Set the "checked" attribute of the checkboxes based on the selected types
-        $('.type-checkbox').each(function() {
+        $('.type-checkbox').each(function () {
             if (selectedTypes.includes($(this).val())) {
                 $(this).prop('checked', true);
             }
         });
 
         // Handle checkbox clicks
-        $('.type-checkbox').on('click', function() {
+        $('.type-checkbox').on('click', function () {
             // Get the selected types
             const selectedTypes = [];
-            $('.type-checkbox:checked').each(function() {
+            $('.type-checkbox:checked').each(function () {
                 selectedTypes.push($(this).val());
             });
 
@@ -114,8 +114,6 @@
         });
     });
 </script>
-
-
 
 
 </body>

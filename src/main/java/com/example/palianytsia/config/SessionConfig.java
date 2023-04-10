@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpSessionListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.example.palianytsia.controller.Constants.CART_COUNT;
+
 @Configuration
 public class SessionConfig {
     @Bean
@@ -16,7 +18,7 @@ public class SessionConfig {
 
         @Override
         public void sessionCreated(HttpSessionEvent se) {
-            se.getSession().setAttribute("cartCount", 0);
+            se.getSession().setAttribute(CART_COUNT, 0);
         }
 
     }

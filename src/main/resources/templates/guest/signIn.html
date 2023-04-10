@@ -38,16 +38,16 @@
             <h1 th:text="#{signIn}"/>
         </div>
 
-        <form name="member-registration" th:action="@{/guest/signIn}"  method="post"
+        <form name="member-registration" th:action="@{/guest/signIn}" method="post"
               class="form-validate form-horizontal well" style="margin-top: 50px">
             <fieldset>
                 <div class="form-group">
                     <label th:text="#{enter.email}"/>
-                    <input type="text" class="form-control" required name="email" >
+                    <input type="text" class="form-control" required name="email">
                 </div>
                 <div class="form-group">
                     <label th:text="#{enter.pass}"/>
-                    <input type="password" class="form-control" required name="password" >
+                    <input type="password" class="form-control" required name="password">
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -61,7 +61,7 @@
             </fieldset>
         </form>
     </sec>
-    </div>
+</div>
 </div>
 
 

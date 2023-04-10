@@ -15,67 +15,49 @@
     <div class="container" data-aos="fade-up">
 
         <div class="section-header" style="padding-top: 50px">
-            <p th:text="#{best}"> <span th:text="#{cookiesDelivery}"/></p>
+            <p>Best <span>Cookies Worldwide</span></p>
         </div>
 
-<div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
 
-    <div class="tab-pane fade active show" id="cookies">
+            <div class="tab-pane fade active show" id="cookies">
 
-        <div class="tab-header text-center">
-            <h3 th:text="#{cookies}"/>
+                <div class="tab-header text-center">
+                    <h3 th:text="#{cookies}"/>
+                </div>
+
+                <th:block th:insert="~{guest/sorter.html :: #sorter(baseUrl='/guest/allCookies')}"></th:block>
+
+                <div class="row gy-5">
+
+                    <div class="col-lg-4 menu-item" th:each="cookie: ${content}">
+                        <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
+                        <h4 th:text="${cookie.name}"/>
+                        <p class="price" th:text="'$' + ${cookie.price}"/>
+                        <select class="select-qty">
+                            <option value="1" selected th:text="#{qty}+':1'"/>
+                            <th:block th:each="i : ${#numbers.sequence(2,12)}">
+                                <option th:value="${i}" th:text="#{qty} + ' '+ ${i}"></option>
+                            </th:block>
+                        </select>
+                        <a class="btn-add-to-cart" th:data-id="${cookie.id}" th:text="#{addToCart}"/>
+                    </div><!-- Menu Item -->
+
+
+                </div>
+            </div><!-- End Starter Menu Content -->
+
         </div>
-
-        <th:block th:insert="~{guest/sorter.html :: sorter(baseUrl='/guest/allCookies')}"></th:block>
-
-        <div class="row gy-5">
-
-            <div class="col-lg-4 menu-item" th:each="cookie: ${items}">
-                <img th:src="@{${cookie.getImgURL()}}" class="menu-img img-fluid">
-                <h4 th:text="${cookie.name}"/>
-                <p class="price" th:text="'$' + ${cookie.price}"/>
-                <select class="select-qty">
-                    <option value="1" selected th:text="#{qty}+':1'"/>
-                    <th:block th:each="i : ${#numbers.sequence(2,12)}">
-                        <option th:value="${i}" th:text="#{qty} + ' '+ ${i}"></option>
-                    </th:block>
-                </select>
-                <a class="btn-add-to-cart" th:data-id="${cookie.id}" th:text="#{addToCart}" />
-            </div><!-- Menu Item -->
-
-
-        </div>
-    </div><!-- End Starter Menu Content -->
-
-</div>
-       <th:block th:insert="~{guest/pagination.html :: pagination(baseUrl='/guest/allCookies')}"></th:block>
+        <th:block th:insert="~{guest/pagination.html :: pagination(baseUrl='/guest/allCookies')}"></th:block>
     </div>
 </section>
 
-
-
-
 <script>
-    $(document).ready(function() {
-        $('.btn-add-to-cart').click(function() {
-            // Get the product ID from the data-id attribute
-            var productId = $(this).data('id');
-
-            // Get the selected quantity from the corresponding select element
-            var qty = $(this).siblings('.select-qty').val();
-
-            // Update the cart count span
-            var cartCount = $('#cart-count');
-            cartCount.text(parseInt(cartCount.text()) + parseInt(qty));
-        });
-    });
-</script>
-<script>
-    $('.select-dropdown__button').on('click', function(){
+    $('.select-dropdown__button').on('click', function () {
         $('.select-dropdown__list').toggleClass('active');
     });
-    $('.select-dropdown__list-item').on('click', function(){
-        var itemValue = $(this).data('value');
+    $('.select-dropdown__list-item').on('click', function () {
+        const itemValue = $(this).data('value');
         console.log(itemValue);
         $('.select-dropdown__button span').text($(this).text()).parent().attr('data-value', itemValue);
         $('.select-dropdown__list').toggleClass('active');

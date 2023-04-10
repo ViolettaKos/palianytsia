@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +19,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     @Autowired
-    public ItemServiceImpl (ItemRepository itemRepository) {
-        this.itemRepository=itemRepository;
+    public ItemServiceImpl(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -32,10 +31,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<Item> displayAllItems(List<ItemType> selectedTypes, Pageable pageable) {
         Page<Item> itemPage;
-        if(!selectedTypes.isEmpty()) {
-            itemPage=itemRepository.findItemsByItemTypeIn(selectedTypes, pageable);
+        if (!selectedTypes.isEmpty()) {
+            itemPage = itemRepository.findItemsByItemTypeIn(selectedTypes, pageable);
         } else
-            itemPage=itemRepository.findAll(pageable);
+            itemPage = itemRepository.findAll(pageable);
         return itemPage;
     }
 
@@ -66,26 +65,26 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Page<Item> displayThreeCookies() {
-        return itemRepository.findItemsByItemType(ItemType.COOKIE, PageRequest.of(0,3));
+        return itemRepository.findItemsByItemType(ItemType.COOKIE, PageRequest.of(0, 3));
     }
 
     @Override
     public Page<Item> displayThreeCakes() {
-        return itemRepository.findItemsByItemType(ItemType.CAKE, PageRequest.of(0,3));
+        return itemRepository.findItemsByItemType(ItemType.CAKE, PageRequest.of(0, 3));
     }
 
     @Override
     public Page<Item> displayThreeCroissants() {
-        return itemRepository.findItemsByItemType(ItemType.CROISSANT, PageRequest.of(0,3));
+        return itemRepository.findItemsByItemType(ItemType.CROISSANT, PageRequest.of(0, 3));
     }
 
     @Override
     public Page<Item> displayThreeCupcakes() {
-        return itemRepository.findItemsByItemType(ItemType.CUPCAKE, PageRequest.of(0,3));
+        return itemRepository.findItemsByItemType(ItemType.CUPCAKE, PageRequest.of(0, 3));
     }
 
     @Override
     public Page<Item> displayThreeCheesecakes() {
-        return itemRepository.findItemsByItemType(ItemType.CHEESECAKE, PageRequest.of(0,3));
+        return itemRepository.findItemsByItemType(ItemType.CHEESECAKE, PageRequest.of(0, 3));
     }
 }

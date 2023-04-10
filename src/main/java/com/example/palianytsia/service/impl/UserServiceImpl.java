@@ -5,55 +5,53 @@ import com.example.palianytsia.dto.OrderDTO;
 import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
-import com.example.palianytsia.model.Order;
 import com.example.palianytsia.model.User;
-import com.example.palianytsia.repository.ItemRepository;
 import com.example.palianytsia.repository.OrderRepository;
-import com.example.palianytsia.repository.RoleRepository;
 import com.example.palianytsia.repository.UserRepository;
 import com.example.palianytsia.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.palianytsia.dto.Mapper.toUserDTO;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
-    private final ItemRepository itemRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, OrderRepository orderRepository,
-                           ItemRepository itemRepository, PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder) {
         super();
-        this.userRepository=userRepository;
-        this.passwordEncoder=passwordEncoder;
-        this.orderRepository=orderRepository;
-        this.itemRepository=itemRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.orderRepository = orderRepository;
     }
 
     @Override
     public void signUp(UserDTO userDTO) throws ServiceException {
-        User user=userRepository.findByEmail(userDTO.getEmail());
-        if (user==null) {
+        User user = userRepository.findByEmail(userDTO.getEmail());
+        if (user == null) {
             log.info("No such user!");
-            user=Mapper.toUser(userDTO);
+            user = Mapper.toUser(userDTO);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
             userRepository.save(user);
         } else {
-        log.info("User already exists");
-        throw new DuplicatedEmailException(); }
+            log.info("User already exists");
+            throw new DuplicatedEmailException();
+        }
     }
 
 
@@ -64,10 +62,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDTO updateProfile(String email, UserDTO userDTO) throws ServiceException {
-        User user=userRepository.findByEmail(email);
-        if(!email.equals(userDTO.getEmail())) {
-            log.info("Not same email");
-            if(userRepository.findByEmail(userDTO.getEmail())!=null)
+        User user = userRepository.findByEmail(email);
+        if (!email.equals(userDTO.getEmail())) {
+            if (userRepository.findByEmail(userDTO.getEmail()) != null)
                 throw new DuplicatedEmailException();
         }
         log.info("Same email");
@@ -81,15 +78,18 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void updatePassword(UserDTO userDTO) {
-        User user=userRepository.findByEmail(userDTO.getEmail());
+        User user = userRepository.findByEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getNewPass()));
         userRepository.save(user);
     }
 
     @Override
-    public List<OrderDTO> findOrders(String email) {
-        User user=userRepository.findByEmail(email);
-        List<Order> orders=orderRepository.findByUserOrderByDateCreated(user);
-        return orders.stream().map(Mapper::toOrderDTO).collect(Collectors.toList());
+    public Page<OrderDTO> displayAllOrders(String email, Pageable pageable) {
+        User user = userRepository.findByEmail(email);
+        List<OrderDTO> orderDTOs = orderRepository.findAllByUser(user, pageable)
+                .stream()
+                .map(Mapper::toOrderDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(orderDTOs, pageable, orderDTOs.size());
     }
 }

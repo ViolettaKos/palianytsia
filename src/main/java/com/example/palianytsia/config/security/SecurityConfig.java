@@ -57,6 +57,7 @@ public class SecurityConfig {
                         .permitAll())
                 .build();
     }
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/assets/**");

@@ -1,11 +1,7 @@
 package com.example.palianytsia.dto;
 
 
-import com.example.palianytsia.model.Location;
-import com.example.palianytsia.model.Role;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

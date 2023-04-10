@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
@@ -44,7 +43,7 @@ public class BasicGuestController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
-   private static final PaginationUtil paginationUtil=new PaginationUtil();
+    private static final PaginationUtil paginationUtil = new PaginationUtil();
 
     @GetMapping("/mainPage")
     public String goHome(Model model, Locale locale) {
@@ -55,9 +54,7 @@ public class BasicGuestController {
     @GetMapping("/count")
     @ResponseBody
     public Integer count() {
-        int qty=shoppingCartService.getQty();
-        System.out.println("my qty: "+qty);
-        return qty;
+        return shoppingCartService.getQty();
     }
 
     @GetMapping("/getCart")
@@ -65,14 +62,12 @@ public class BasicGuestController {
         model.addAttribute(ITEMS, shoppingCartService.getProductsInCart());
         BigDecimal total = shoppingCartService.getTotal();
         model.addAttribute(TOTAL, total);
-        System.out.println("Total sum: " + total);
         return CART_PAGE;
     }
-    @PostMapping ("/changeAmount")
-    public String changeQty(@RequestParam("quantity") int qty, @RequestParam(ID) Long itemId, HttpServletRequest request) {
-        System.out.println("quantity to be: "+qty);
-        System.out.println("id: "+itemId);
-        Item item=itemService.findById(itemId);
+
+    @PostMapping("/changeAmount")
+    public String changeQty(@RequestParam(QTY) int qty, @RequestParam(ID) Long itemId, HttpServletRequest request) {
+        Item item = itemService.findById(itemId);
         shoppingCartService.changeQty(item, qty);
         request.getSession().setAttribute(CART_COUNT, shoppingCartService.getQty());
         return REDIRECT_CART;
@@ -80,27 +75,25 @@ public class BasicGuestController {
 
     @PostMapping("/removeItem")
     public String removeItem(@RequestParam(ID) long id, HttpServletRequest request) {
-        System.out.println("id: "+id);
-        Item item=itemService.findById(id);
+        Item item = itemService.findById(id);
         shoppingCartService.removeItem(item);
         request.getSession().setAttribute(CART_COUNT, shoppingCartService.getQty());
         return REDIRECT_CART;
     }
 
     @PostMapping("/addItem")
-    public String addItem(@RequestParam("itemId") Long itemId, @RequestParam("quantity") Integer qty,
+    public String addItem(@RequestParam("itemId") Long itemId, @RequestParam(QTY) Integer qty,
                           RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        System.out.println("item id: " + itemId + " qty: " + qty);
         Item item = itemService.findById(itemId);
         shoppingCartService.addItem(item, qty);
-        redirectAttributes.addFlashAttribute(MSG, "warn.added");
+        redirectAttributes.addFlashAttribute(MSG, WARN_ADDED);
 
         String referer = request.getHeader("Referer");
-        System.out.println("Referer: " + referer);
 
-        int cartCount=shoppingCartService.getQty();
+        int cartCount = shoppingCartService.getQty();
         HttpSession session = request.getSession();
         session.setAttribute(CART_COUNT, cartCount);
+
         return "redirect:" + referer;
     }
 
@@ -122,7 +115,6 @@ public class BasicGuestController {
                                   @RequestParam(defaultValue = ASC) String dir,
                                   @RequestParam(required = false, value = "type") String[] types) {
 
-        System.out.println("Method allProducts");
         Sort sorting = Sort.by(sort);
         if (dir.equals(ASC)) {
             sorting = sorting.ascending();
@@ -134,13 +126,14 @@ public class BasicGuestController {
         if (types != null) {
             for (String type : types) {
                 for (String typePart : type.split(",")) {
-                selectedTypes.add(ItemType.valueOf(typePart.toUpperCase())); }
+                    selectedTypes.add(ItemType.valueOf(typePart.toUpperCase()));
+                }
             }
         }
 
         Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
         Page<Item> itemPage = itemService.displayAllItems(selectedTypes, pageable);
-        Map<String, Object> response = paginationUtil.pagination(itemPage, dir);
+        Map<String, Object> response = paginationUtil.paginationObj(itemPage, dir);
         model.addAllAttributes(response);
         return ALL_PRODUCTS_PAGE;
     }
@@ -152,8 +145,7 @@ public class BasicGuestController {
                               @RequestParam(defaultValue = "6") int recordsPerPage,
                               @RequestParam(defaultValue = ID) String sort,
                               @RequestParam(defaultValue = ASC) String dir
-                              ) {
-        log.info("Page: "+page+" Records per page: "+recordsPerPage);
+    ) {
         Sort sorting = Sort.by(sort);
         if (dir.equals(ASC)) {
             sorting = sorting.ascending();
@@ -162,7 +154,7 @@ public class BasicGuestController {
         }
         Pageable pageable = PageRequest.of(page, recordsPerPage, sorting);
         Page<Item> itemPage = itemService.displayCookies(pageable);
-        Map<String, Object> response = paginationUtil.pagination(itemPage, dir);
+        Map<String, Object> response = paginationUtil.paginationObj(itemPage, dir);
         model.addAllAttributes(response);
 
         return COOKIES_PAGE;
@@ -170,20 +162,15 @@ public class BasicGuestController {
 
     @GetMapping("/productPage")
     public String toProductPage(Model model, @RequestParam(ID) Long id) {
-        log.info("Product id: "+id);
+        log.info("Product id: " + id);
         model.addAttribute(ITEM, itemService.findById(id));
         return PRODUCT_PAGE;
     }
 
-
-
     @GetMapping("/signIn")
     public String toSignIn() {
-        log.info("To sign in page");
         return SIGNIN_PAGE;
     }
-
-
 
     @GetMapping("/signUp")
     public String toSignUp(Model model) {
@@ -193,17 +180,17 @@ public class BasicGuestController {
 
     @PostMapping("/signUp")
     public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model, RedirectAttributes redirectAttributes) throws ServiceException {
-        if(userSignUpRequest.getPassword().equals(userSignUpRequest.getRepeated_password())) {
+        if (userSignUpRequest.getPassword().equals(userSignUpRequest.getRepeated_password())) {
             log.info("Passwords match");
             try {
                 registerUser(userSignUpRequest);
             } catch (DuplicatedEmailException e) {
-                log.info("Duplicated Email");
+                log.error("Duplicated Email");
                 model.addAttribute(MSG, e.getMessage());
                 return SIGNUP_PAGE;
             }
         } else {
-            log.info("Passwords don't match");
+            log.error("Passwords don't match");
             model.addAttribute(MSG, NO_MATCH);
             return SIGNUP_PAGE;
         }

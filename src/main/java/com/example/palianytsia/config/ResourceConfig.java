@@ -12,23 +12,16 @@ import java.util.Locale;
 
 @Configuration
 public class ResourceConfig implements WebMvcConfigurer {
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/assets/**")
-//                .addResourceLocations("classpath:/static/assets")
-//                .addResourceLocations("classpath:/resources/static/assets");
-//
-//    }
     @Bean
     public LocaleResolver localeResolver() {
-        SessionLocaleResolver sessionLocaleResolver=new SessionLocaleResolver();
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.ENGLISH);
         return sessionLocaleResolver;
     }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor localeChangeInterceptor=new LocaleChangeInterceptor();
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
     }

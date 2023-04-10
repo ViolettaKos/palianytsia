@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,14 +15,14 @@ import java.util.List;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id", unique = true, nullable = false)
     private long id;
 
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(name = "item_type",nullable = false)
+    @Column(name = "item_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 
@@ -33,7 +32,7 @@ public class Item {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "imgurl",nullable = false)
+    @Column(name = "imgurl", nullable = false)
     private String imgURL;
 
 }

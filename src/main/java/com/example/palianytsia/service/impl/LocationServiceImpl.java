@@ -19,15 +19,16 @@ public class LocationServiceImpl implements LocationService {
 
     public LocationServiceImpl(LocationRepository locationRepository, UserRepository userRepository) {
         super();
-        this.locationRepository=locationRepository;
-        this.userRepository=userRepository;
+        this.locationRepository = locationRepository;
+        this.userRepository = userRepository;
     }
+
     @Override
     public void editAddress(LocationDTO locationDTO) {
-        Location location=locationRepository.findLocationById(locationDTO.getId());
-        User user=location.getUser();
-        Long id=location.getId();
-        location= Mapper.toLocation(locationDTO);
+        Location location = locationRepository.findLocationById(locationDTO.getId());
+        User user = location.getUser();
+        Long id = location.getId();
+        location = Mapper.toLocation(locationDTO);
         location.setUser(user);
         location.setId(id);
 
@@ -36,16 +37,16 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void deleteAddress(LocationDTO locationDTO) {
-        Location location=locationRepository.findLocationById(locationDTO.getId());
-        log.info("id: "+location.getId());
+        Location location = locationRepository.findLocationById(locationDTO.getId());
+        log.info("id: " + location.getId());
         locationRepository.deleteById(location.getId());
     }
 
     @Override
     public void addAddress(String email, LocationDTO locationDTO) {
-        User user=userRepository.findByEmail(email);
-        log.info("locationDto id: "+locationDTO.getId());
-        Location location= Mapper.toLocation(locationDTO);
+        User user = userRepository.findByEmail(email);
+        log.info("locationDto id: " + locationDTO.getId());
+        Location location = Mapper.toLocation(locationDTO);
         location.setUser(user);
 
         locationRepository.save(location);

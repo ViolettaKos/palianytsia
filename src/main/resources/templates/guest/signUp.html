@@ -31,7 +31,8 @@
                            th:title="#{title.letters}"
                            th:field="*{firstName}"
                     />
-                    <small class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></small>
+                    <small class="text-danger" th:if="${#fields.hasErrors('firstName')}"
+                           th:errors="*{firstName}"></small>
                 </div>
                 <div class="form-group">
                     <label th:text="#{last.name}">*</label>
@@ -53,7 +54,8 @@
                     <label th:text="#{conf.pass}">*</label>
                     <input type="password" class="form-control" required name="repeated_password"
                            th:field="*{repeated_password}"/>
-                    <small class="text-danger" th:if="${#fields.hasErrors('repeated_password')}" th:errors="*{repeated_password}"></small>
+                    <small class="text-danger" th:if="${#fields.hasErrors('repeated_password')}"
+                           th:errors="*{repeated_password}"></small>
                 </div>
                 <div class="form-group">
                     <label th:text="#{email}">*</label>
@@ -69,7 +71,8 @@
                            pattern="^(?:\+38)?(?:[0-9] ?){9}[0-9]$"
                            th:title="#{title.phone}"
                            th:field="*{mobileNumber}"/>
-                    <small class="text-danger" th:if="${#fields.hasErrors('mobileNumber')}" th:errors="*{mobileNumber}"></small>
+                    <small class="text-danger" th:if="${#fields.hasErrors('mobileNumber')}"
+                           th:errors="*{mobileNumber}"></small>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="form-group d-flex justify-content-start">

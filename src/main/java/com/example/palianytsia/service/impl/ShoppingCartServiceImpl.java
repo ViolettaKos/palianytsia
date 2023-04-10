@@ -1,10 +1,8 @@
 package com.example.palianytsia.service.impl;
 
 import com.example.palianytsia.model.Item;
-import com.example.palianytsia.repository.ItemRepository;
 import com.example.palianytsia.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -22,14 +20,14 @@ import java.util.Map;
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    private Map<Item, Integer> items=new HashMap<>();
+    private Map<Item, Integer> items = new HashMap<>();
 
     @Override
     public void addItem(Item item, int quantity) {
-        log.info("Amount to  add: "+quantity);
-        if(items.containsKey(item)) {
+        log.info("Amount to  add: " + quantity);
+        if (items.containsKey(item)) {
             log.info("Product already in cart, incrementing...");
-            items.replace(item, items.get(item)+quantity);
+            items.replace(item, items.get(item) + quantity);
         } else {
             log.info("No such product added so adding a new one");
             items.put(item, quantity);
@@ -38,7 +36,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void removeItem(Item item) {
-        if(items.containsKey(item)) {
+        if (items.containsKey(item)) {
             items.remove(item);
         } else {
             log.info("No such product to remove!");

@@ -2,136 +2,138 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="headerfiles">
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-  <link th:href="@{/assets/img/icon.png}" rel="icon">
-
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Vendor CSS Files -->
-  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
-  <link th:href="@{/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/img/icon.png}" rel="icon">
 
 
-  <!-- Template Main CSS File -->
-  <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script th:src="@{/assets/js/internationalization.js}"></script>
-  <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-  <script th:src="@{/assets/vendor/aos/aos.js}"></script>
-  <script th:src="@{/assets/vendor/glightbox/js/glightbox.min.js}"></script>
-  <script th:src="@{/assets/vendor/purecounter/purecounter_vanilla.js}"></script>
-  <script th:src="@{/assets/vendor/swiper/swiper-bundle.min.js}"></script>
-  <script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
+    <!-- Vendor CSS Files -->
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
 
 
-  <!-- Template Main JS File -->
-  <script th:src="@{/assets/js/main.js}"></script>
+    <!-- Template Main CSS File -->
+    <link th:href="@{/assets/css/main.css}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script th:src="@{/assets/js/internationalization.js}"></script>
+    <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/vendor/aos/aos.js}"></script>
+    <script th:src="@{/assets/vendor/glightbox/js/glightbox.min.js}"></script>
+    <script th:src="@{/assets/vendor/purecounter/purecounter_vanilla.js}"></script>
+    <script th:src="@{/assets/vendor/swiper/swiper-bundle.min.js}"></script>
+
+
+    <!-- Template Main JS File -->
+    <script th:src="@{/assets/js/main.js}"></script>
 
 </head>
 <body>
 <!-- ======= Header ======= -->
 <header th:fragment="header" id="header" class="header fixed-top d-flex align-items-center">
-  <div class="container d-flex align-items-center justify-content-between">
+    <div class="container d-flex align-items-center justify-content-between">
 
-    <a href="user/mainPage" class="logo d-flex align-items-center me-auto me-lg-0">
-      <h1>Palianytsia<span>.</span></h1>
-    </a>
-
-    <nav id="navbar" class="navbar">
-      <ul>
-        <li><a href="user/mainPage" th:text="#{home}"/></li>
-        <li><a href="guest/aboutPage" th:text="#{about}"/></li>
-        <li class="dropdown"><a href="#"><span th:text="#{our.products}"/> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-          <ul>
-            <li><a th:href="@{/guest/products}" style="font-weight: bold" th:text="#{all}"/></li>
-            <li><a th:href="@{/guest/allCookies}" th:text="#{cookies}"/></li>
-            <li><a th:href="@{/guest/allCaked}" th:text="#{cakes}"/></li>
-            <li><a th:href="@{/guest/allCroissants}" th:text="#{croissants}"/></li>
-            <li><a th:href="@{/guest/allCupcakes}" th:text="#{cupcakes}"/></li>
-            <li><a th:href="@{/guest/allCheesecakes}" th:text="#{cheesecakes}"/></li>
-          </ul>
-        </li>
-        <li><a href="guest/contact" th:text="#{contact}"/></li>
-      </ul>
-</nav><!-- .navbar -->
-
-
-    <nav style="padding: 0; display: flex; list-style: none;">
-    <select id="locales"  class="my-select" style="width: 60px; margin-right: 20px;">
-      <option value="">&#x1F30D;</option>
-      <option value="EN">
-        <th:block th:text="#{label.lang.en}"></th:block>
-      </option>
-      <option value="UK">
-        <th:block th:text="#{label.lang.ua}"></th:block>
-      </option>
-    </select>
-
-      <div style="padding-right: 40px; padding-left: 10px; margin-top: 5px">
-        <a role="button" class="cart-count" th:href="@{/guest/getCart}">
-          <img th:src="@{/assets/img/cart.png}">
-          <span class="cart-count" th:text="${session.cartCount ?: 0}"></span>
+        <a href="user/mainPage" class="logo d-flex align-items-center me-auto me-lg-0">
+            <h1>Palianytsia<span>.</span></h1>
         </a>
-      </div>
 
-    <div sec:authorize="hasAuthority('USER')" >
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="/guest/mainPage" th:text="#{home}"/></li>
+                <li><a href="guest/aboutPage" th:text="#{about}"/></li>
+                <li class="dropdown"><a href="#"><span th:text="#{our.products}"/> <i
+                        class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <ul>
+                        <li><a th:href="@{/guest/products}" style="font-weight: bold" th:text="#{all}"/></li>
+                        <li><a th:href="@{/guest/allCookies}" th:text="#{cookies}"/></li>
+                        <li><a th:href="@{/guest/allCakes}" th:text="#{cakes}"/></li>
+                        <li><a th:href="@{/guest/allCroissants}" th:text="#{croissants}"/></li>
+                        <li><a th:href="@{/guest/allCupcakes}" th:text="#{cupcakes}"/></li>
+                        <li><a th:href="@{/guest/allCheesecakes}" th:text="#{cheesecakes}"/></li>
+                    </ul>
+                </li>
+                <li><a href="guest/contact" th:text="#{contact}"/></li>
+            </ul>
+        </nav><!-- .navbar -->
 
-      <li class="nav-item dropdown pe-3" style="margin-bottom: 2px; list-style-type: none;">
 
-        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img th:src="@{/assets/img/logoProfile.png}" alt="Profile" class="rounded-circle" height="35" width="35">
-          <span class="d-none d-md-block dropdown-toggle ps-2" sec:authentication="principal.fullName"></span>
-        </a><!-- End Profile Iamge Icon -->
+        <nav style="padding: 0; display: flex; list-style: none;">
+            <select id="locales" class="my-select" style="width: 60px; margin-right: 20px;">
+                <option value="">&#x1F30D;</option>
+                <option value="EN">
+                    <th:block th:text="#{label.lang.en}"></th:block>
+                </option>
+                <option value="UK">
+                    <th:block th:text="#{label.lang.ua}"></th:block>
+                </option>
+            </select>
 
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <div style="padding-right: 40px; padding-left: 10px; margin-top: 5px">
+                <a role="button" class="cart-count" th:href="@{/guest/getCart}">
+                    <img th:src="@{/assets/img/cart.png}">
+                    <span class="cart-count" th:text="${session.cartCount ?: 0}"></span>
+                </a>
+            </div>
 
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="user/profile">
-              <i class="bi bi-person"></i>
-              <span th:text="#{myProfile}" th:href="@{/user/profile}"/>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+            <div sec:authorize="hasAuthority('USER')">
 
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="/user/orderHistory">
-              <i class="bi bi-cart"></i>
-              <span th:text="#{myOrders}" th:href="@{/user/orderHistory}"/>
-            </a>
-          </li>
-        </ul><!-- End Profile Dropdown Items -->
-      </li><!-- End Profile Nav -->
+                <li class="nav-item dropdown pe-3" style="margin-bottom: 2px; list-style-type: none;">
 
-      </ul>
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img th:src="@{/assets/img/logoProfile.png}" alt="Profile" class="rounded-circle" height="35"
+                             width="35">
+                        <span class="d-none d-md-block dropdown-toggle ps-2"
+                              sec:authentication="principal.fullName"></span>
+                    </a><!-- End Profile Iamge Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="/user/profile">
+                                <i class="bi bi-person"></i>
+                                <span th:text="#{myProfile}" th:href="@{/user/profile}"/>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="/user/orderHistory">
+                                <i class="bi bi-cart"></i>
+                                <span th:text="#{myOrders}" th:href="@{/user/orderHistory}"/>
+                            </a>
+                        </li>
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+                </ul>
+            </div>
+
+            <div style="padding: 6px">
+                <div sec:authorize="!isAuthenticated()">
+                    <a class="btn-book-a-table" href="guest/signIn" th:text="#{signIn}"></a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn-book-a-table" th:href="@{/logout}" th:text="#{signOut}"></a>
+                </div>
+            </div>
+
+        </nav>
+
     </div>
-
-<div style="padding: 6px">
-    <div sec:authorize="!isAuthenticated()">
-      <a class="btn-book-a-table" href="guest/signIn" th:text="#{signIn}"></a>
-    </div>
-    <div sec:authorize="isAuthenticated()">
-      <a class="btn-book-a-table" th:href="@{/logout}" th:text="#{signOut}"></a>
-    </div>
-</div>
-
-    </nav>
-
-  </div>
 
 
 </header><!-- End Header -->

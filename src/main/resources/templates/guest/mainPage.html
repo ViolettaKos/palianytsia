@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-<title>Palianytsia</title>
+    <title>Palianytsia</title>
     <th:block th:insert="~{guest/head.html :: headerfiles}">
     </th:block>
 </head>
@@ -15,10 +15,14 @@
     <div class="container">
         <div class="row justify-content-between gy-5">
             <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
-                <h2 data-aos="fade-up"><th:block th:text="#{main.text}"></th:block><br><th:block th:text="#{main.text2}"></th:block></h2>
+                <h2 data-aos="fade-up">
+                    <th:block th:text="#{main.text}"></th:block>
+                    <br>
+                    <th:block th:text="#{main.text2}"></th:block>
+                </h2>
                 <p data-aos="fade-up" data-aos-delay="100" th:text="#{main.text3}"/>
                 <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                    <a th:href="@{/guest/produts}" class="btn-book-a-table" th:text="#{make.order}"></a>
+                    <a th:href="@{/guest/products}" class="btn-book-a-table" th:text="#{make.order}"></a>
                 </div>
             </div>
             <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
