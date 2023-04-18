@@ -40,4 +40,11 @@ public interface Constants {
     String WARN_PROFILE = "warn.profile";
     String WARN_ADDRESS = "warn.address";
     String WARN_ADDED = "warn.added";
+    String ADD="ADD";
+    String EDIT="EDIT";
+    String REMOVE="REMOVE";
+    String CHANGE="CHANGE";
+    String EMAIL_CHANGES="email_changes";
+    String EMAIL_INFO="email_info";
+    String EMAIL_PROMO="email_promo";
 }

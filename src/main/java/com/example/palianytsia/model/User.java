@@ -51,4 +51,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orders;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Notifications notifications;
 }

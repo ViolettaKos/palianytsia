@@ -1,6 +1,7 @@
 package com.example.palianytsia.config.security;
 
 import com.example.palianytsia.model.Location;
+import com.example.palianytsia.model.Notifications;
 import com.example.palianytsia.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

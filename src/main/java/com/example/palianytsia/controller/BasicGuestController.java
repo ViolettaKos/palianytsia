@@ -7,10 +7,13 @@ import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
 import com.example.palianytsia.model.Item;
 import com.example.palianytsia.model.ItemType;
+import com.example.palianytsia.model.Notifications;
 import com.example.palianytsia.model.UserRoles;
+import com.example.palianytsia.service.EmailService;
 import com.example.palianytsia.service.ItemService;
 import com.example.palianytsia.service.ShoppingCartService;
 import com.example.palianytsia.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.example.palianytsia.controller.Constants.*;
+import static com.example.palianytsia.controller.EmailConstants.*;
 import static com.example.palianytsia.controller.PageConstants.*;
 
 @Slf4j
@@ -37,11 +41,14 @@ import static com.example.palianytsia.controller.PageConstants.*;
 public class BasicGuestController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
     @Autowired
     private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private EmailService emailService;
 
     private static final PaginationUtil paginationUtil = new PaginationUtil();
 
@@ -179,7 +186,8 @@ public class BasicGuestController {
     }
 
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model, RedirectAttributes redirectAttributes) throws ServiceException {
+    public String signUp(@ModelAttribute @Validated UserSignUpRequest userSignUpRequest, Model model,
+                         RedirectAttributes redirectAttributes, HttpServletRequest req) throws ServiceException {
         if (userSignUpRequest.getPassword().equals(userSignUpRequest.getRepeated_password())) {
             log.info("Passwords match");
             try {
@@ -194,8 +202,24 @@ public class BasicGuestController {
             model.addAttribute(MSG, NO_MATCH);
             return SIGNUP_PAGE;
         }
+        sendEmail(userSignUpRequest, req);
         redirectAttributes.addFlashAttribute(SUCCESS, WARN_SUCCESS);
         return REDIRECT_SIGNIN;
+    }
+
+    private void sendEmail(UserSignUpRequest userSignUpRequest, HttpServletRequest req) {
+        String body = String.format(MESSAGE_REGISTER, userSignUpRequest.getFirstName(), getURL(req));
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(userSignUpRequest.getEmail(), SBJ_REG, body);
+            } catch (MessagingException e) {
+                log.error("Error while sending email to user");
+            }
+        }).start();
+    }
+
+    private String getURL(HttpServletRequest request) {
+        return request.getRequestURL().toString()+request.getRequestURI();
     }
 
     private void registerUser(UserSignUpRequest userSignupRequest) throws ServiceException {
@@ -203,12 +227,14 @@ public class BasicGuestController {
         userRole.setId(2L);
         Set<RoleDTO> roles = new HashSet<>();
         roles.add(userRole);
+        Notifications notifications=new Notifications().setEmail_changes(true).setEmail_info(true).setEmail_promo(false);
         UserDTO userDto = new UserDTO()
                 .setRoles(roles)
                 .setEmail(userSignupRequest.getEmail())
                 .setPassword(userSignupRequest.getPassword())
                 .setFirstName(userSignupRequest.getFirstName())
                 .setLastName(userSignupRequest.getLastName())
+                .setNotifications(notifications)
                 .setMobileNumber(userSignupRequest.getMobileNumber());
         log.info("Successfully setting fields to UserDTO");
         userService.signUp(userDto);

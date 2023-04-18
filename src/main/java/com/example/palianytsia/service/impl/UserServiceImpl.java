@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
             log.info("No such user!");
             user = Mapper.toUser(userDTO);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
             userRepository.save(user);
         } else {
             log.info("User already exists");

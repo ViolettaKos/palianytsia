@@ -6,11 +6,11 @@ import com.example.palianytsia.dto.UserDTO;
 import com.example.palianytsia.exception.DuplicatedEmailException;
 import com.example.palianytsia.exception.ServiceException;
 import com.example.palianytsia.model.City;
+import com.example.palianytsia.model.Notifications;
 import com.example.palianytsia.model.OrderStatus;
-import com.example.palianytsia.service.LocationService;
-import com.example.palianytsia.service.OrderService;
-import com.example.palianytsia.service.ShoppingCartService;
-import com.example.palianytsia.service.UserService;
+import com.example.palianytsia.service.*;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.example.palianytsia.controller.Constants.*;
+import static com.example.palianytsia.controller.EmailConstants.*;
 import static com.example.palianytsia.controller.PageConstants.*;
 import static org.springframework.util.StringUtils.hasLength;
 
@@ -46,6 +47,8 @@ public class UserController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private EmailService emailService;
     private static final PaginationUtil paginationUtil = new PaginationUtil();
 
 
@@ -64,8 +67,40 @@ public class UserController {
     public String addAddress(Principal principal, @ModelAttribute LocationDTO locationDTO, RedirectAttributes redirectAttributes) {
         UserDTO userDTO = userService.findByEmail(principal.getName());
         locationService.addAddress(userDTO.getEmail(), locationDTO);
+        checkIfSend(userDTO, ADD);
         redirectAttributes.addFlashAttribute(SUCCESS, WARN_ADDRESS);
         return REDIRECT_PROFILE;
+    }
+
+    private void checkIfSend(UserDTO userDTO, String type) {
+            if(userDTO.getNotifications().isEmail_changes())
+                sendEmail(userDTO, type);
+    }
+
+    private void sendEmail(UserDTO userDTO, String type) {
+        String body="";
+        switch (type) {
+            case ADD ->
+                body = String.format(MESSAGE_ADD, userDTO.getFirstName());
+
+            case EDIT ->
+                body = String.format(MESSAGE_EDIT, userDTO.getFirstName());
+
+            case REMOVE ->
+                body = String.format(MESSAGE_REMOVE, userDTO.getFirstName());
+
+            case CHANGE ->
+                body = String.format(MESSAGE_CHANGE, userDTO.getFirstName());
+
+        }
+        String finalBody = body;
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(userDTO.getEmail(), SBJ_CHANGES, finalBody);
+            } catch (MessagingException e) {
+                log.error("Error while sending email to user");
+            }
+        }).start();
     }
 
     @PostMapping("/editAddress")
@@ -74,9 +109,24 @@ public class UserController {
         return REDIRECT_PROFILE;
     }
 
+    @PostMapping("/notifications")
+    public String editNotifications(Principal principal, HttpServletRequest request) throws ServiceException {
+        UserDTO userDTO=userService.findByEmail(principal.getName());
+        Notifications notifications=userDTO.getNotifications();
+        boolean emailChangesChecked = request.getParameter("notification").contains("email_changes");
+        boolean emailInfoChecked = request.getParameter("notification").contains("email_info");
+        boolean emailPromoChecked = request.getParameter("notification").contains("email_promo");
+        notifications.setEmail_changes(emailChangesChecked).setEmail_info(emailInfoChecked).setEmail_promo(emailPromoChecked);
+        userDTO.setNotifications(notifications);
+        userService.updateProfile(userDTO.getEmail(), userDTO);
+
+        return REDIRECT_PROFILE;
+    }
+
     @PostMapping("/deleteAddress")
-    public String deleteAddress(@ModelAttribute LocationDTO locationDTO) {
+    public String deleteAddress(@ModelAttribute LocationDTO locationDTO, Principal principal) {
         locationService.deleteAddress(locationDTO);
+        checkIfSend(userService.findByEmail(principal.getName()), REMOVE);
         return REDIRECT_PROFILE;
     }
 
@@ -94,6 +144,7 @@ public class UserController {
             log.error("Duplicated email");
             redirectAttributes.addFlashAttribute(MSG, e.getMessage());
         }
+        checkIfSend(userService.findByEmail(principal.getName()), EDIT);
         redirectAttributes.addFlashAttribute(SUCCESS, WARN_PROFILE);
         return REDIRECT_PROFILE;
     }
@@ -112,6 +163,7 @@ public class UserController {
         }
         userDTO.setEmail(principal.getName());
         userService.updatePassword(userDTO);
+        checkIfSend(userService.findByEmail(principal.getName()), CHANGE);
         redirectAttributes.addFlashAttribute(SUCCESS, WARN_PASS);
         return REDIRECT_PROFILE;
     }

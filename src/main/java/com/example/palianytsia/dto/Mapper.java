@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class Mapper {
@@ -17,13 +19,12 @@ public class Mapper {
                 .setLastName(user.getLastName())
                 .setEmail(user.getEmail())
                 .setMobileNumber(user.getMobileNumber())
+                .setNotifications(user.getNotifications())
                 .setRoles(new HashSet<>(user.getRoles().stream().map(role -> new ModelMapper()
                         .map(role, RoleDTO.class)).collect(Collectors.toSet())))
                 .setLocations(new HashSet<>(user.getLocations().stream().map(location -> new ModelMapper()
                         .map(location, LocationDTO.class)).collect(Collectors.toSet())));
     }
-
-    // #todo think about locations, null pointer when register
     public static User toUser(UserDTO userDTO) {
         User user = new User()
                 .setFirstName(userDTO.getFirstName())
@@ -32,7 +33,9 @@ public class Mapper {
                 .setMobileNumber(userDTO.getMobileNumber())
                 .setRoles(new HashSet<>(userDTO.getRoles().stream().map(role -> new ModelMapper()
                         .map(role, Role.class)).collect(Collectors.toSet())));
-
+        Notifications notifications=userDTO.getNotifications();
+        notifications.setUser(user);
+        user.setNotifications(notifications);
         if (userDTO.getLocations() != null) {
             user.setLocations(new HashSet<>(userDTO.getLocations().stream().map(location -> new ModelMapper()
                     .map(location, Location.class)).collect(Collectors.toSet())));

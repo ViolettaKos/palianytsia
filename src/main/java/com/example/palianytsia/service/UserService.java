@@ -16,6 +16,5 @@ public interface UserService {
 
     void updatePassword(UserDTO userDTO);
 
-    //    List<OrderDTO> findOrders(String email);
     Page<OrderDTO> displayAllOrders(String email, Pageable pageable);
 }

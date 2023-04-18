@@ -1,6 +1,7 @@
 package com.example.palianytsia.dto;
 
 
+import com.example.palianytsia.model.Notifications;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,7 @@ public class UserDTO {
     private Set<RoleDTO> roles;
 
     private Collection<LocationDTO> locations;
+
+    private Notifications notifications;
 
 }
