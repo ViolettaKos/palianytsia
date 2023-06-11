@@ -53,8 +53,7 @@ public class BasicGuestController {
     private static final PaginationUtil paginationUtil = new PaginationUtil();
 
     @GetMapping("/mainPage")
-    public String goHome(Model model, Locale locale) {
-        model.addAttribute(LANG, locale.getLanguage());
+    public String goHome() {
         return MAIN_PAGE;
     }
 
